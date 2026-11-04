@@ -1,0 +1,27 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: server-mcp-kotlin
+spec:
+  interval: 10m
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    remediation:
+      retries: 3
+  chart:
+    spec:
+      chart: ./charts/app
+      reconcileStrategy: Revision
+      sourceRef:
+        kind: GitRepository
+        name: flux-system
+        namespace: flux-system
+  values:
+    image: ghcr.io/jagieloadrian/server-mcp-kotlin:main-00000000000000-0000000
+    route:
+      hostname: server-mcp-kotlin.home.arpa
+    env:
+      MCP_HTTP_HOSTS: server-mcp-kotlin.home.arpa
+      LOG_TARGET: System.out
