@@ -1,0 +1,30 @@
+[versions]
+kotlin = "2.4.21"
+ktlint = "14.2.0"
+mcp = "0.16.0"
+kgit = "1.2.2"
+jgit = "7.7.1.202607240634-r"
+kotlin-logging = "8.0.4"
+slf4j = "2.0.18"
+junit = "5.14.4"
+kotest = "6.2.6"
+coroutines = "1.11.0"
+
+[libraries]
+mcp-server = { module = "io.modelcontextprotocol:kotlin-sdk-server", version.ref = "mcp" }
+mcp-client = { module = "io.modelcontextprotocol:kotlin-sdk-client", version.ref = "mcp" }
+mcp-testing = { module = "io.modelcontextprotocol:kotlin-sdk-testing", version.ref = "mcp" }
+kgit = { module = "com.github.sya-ri:kgit", version.ref = "kgit" }
+jgit-ssh-apache = { module = "org.eclipse.jgit:org.eclipse.jgit.ssh.apache", version.ref = "jgit" }
+jgit-ssh-apache-agent = { module = "org.eclipse.jgit:org.eclipse.jgit.ssh.apache.agent", version.ref = "jgit" }
+kotlin-logging = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "kotlin-logging" }
+slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+kotest-assertions = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
+coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
