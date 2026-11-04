@@ -17,6 +17,8 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("io.kotest:kotest-assertions-core:6.2.6")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.11.0")
+    testImplementation("io.modelcontextprotocol:kotlin-sdk-client:0.16.0")
+    testImplementation("io.modelcontextprotocol:kotlin-sdk-testing:0.16.0")
 }
 
 kotlin { jvmToolchain(21) }
