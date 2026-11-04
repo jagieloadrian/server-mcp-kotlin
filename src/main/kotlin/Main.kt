@@ -6,10 +6,8 @@ import io.modelcontextprotocol.kotlin.sdk.types.Implementation
 import io.modelcontextprotocol.kotlin.sdk.types.ServerCapabilities
 import io.modelcontextprotocol.kotlin.sdk.types.TextContent
 import io.modelcontextprotocol.kotlin.sdk.types.ToolSchema
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import kotlinx.io.asSink
 import kotlinx.io.asSource
 import kotlinx.io.buffered
@@ -39,7 +37,7 @@ fun main(args: Array<String>) {
         name = "list_standards",
         description = "List the user's coding standards as `name: summary`. Call before writing or reviewing code.",
     ) {
-        withContext(Dispatchers.IO) { standards.sync() }
+        standards.sync()
         CallToolResult(listOf(TextContent(standards.list())))
     }
 
@@ -53,7 +51,7 @@ fun main(args: Array<String>) {
             required = listOf("name"),
         ),
     ) { request ->
-        withContext(Dispatchers.IO) { standards.sync() }
+        standards.sync()
         val name = (request.arguments?.get("name") as? JsonPrimitive)?.contentOrNull.orEmpty()
         val text = standards.get(name)
             ?: return@addTool CallToolResult(listOf(TextContent("Unknown standard '$name'. Available:\n${standards.list()}")), isError = true)

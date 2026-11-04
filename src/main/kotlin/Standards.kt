@@ -1,21 +1,30 @@
 import com.github.syari.kgit.KGit
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 import org.eclipse.jgit.api.MergeCommand.FastForwardMode
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder
 import java.io.File
 
-// ponytail: pull at most every 5 min, lazily on tool call; add a background poller if docs must refresh while idle
-const val SYNC_INTERVAL_MS = 5 * 60 * 1000L
+// ponytail: pull at most every 24 hours, lazily on tool call; add a background poller if docs must refresh while idle
+const val SYNC_INTERVAL_MS = 24 * 60 * 60 * 1000L
 
 class Standards(dir: File) {
     private val dir = dir.absoluteFile // relative File has null parent, so findGitDir couldn't walk up
-    private var lastSync = 0L
+    private var lastSync = 0L // guarded by mutex
+    private val mutex = Mutex() // one pull at a time (JGit locks the index); waiters suspend, no thread blocked
+
+    /** Throttled pull; a concurrent caller waits for the running pull, then skips. */
+    suspend fun sync() = mutex.withLock {
+        val now = System.currentTimeMillis()
+        if (now - lastSync < SYNC_INTERVAL_MS) return@withLock
+        lastSync = now
+        withContext(Dispatchers.IO) { pull() }
+    }
 
     /** Fast-forward-only pull of the repo containing [dir]; never merges or touches local changes. Failure = serve local copy. */
-    @Synchronized
-    fun sync() {
-        val now = System.currentTimeMillis()
-        if (now - lastSync < SYNC_INTERVAL_MS) return
-        lastSync = now
+    private fun pull() {
         runCatching {
             // dir may be a subfolder (repo/standards), so search upward for .git
             val gitDir = FileRepositoryBuilder().findGitDir(dir).gitDir ?: return log("$dir is not in a git repo, serving local files")

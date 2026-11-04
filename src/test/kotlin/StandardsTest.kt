@@ -1,4 +1,5 @@
 import com.github.syari.kgit.KGit
+import kotlinx.coroutines.runBlocking
 import java.io.File
 import kotlin.io.path.createTempDirectory
 import kotlin.test.Test
@@ -32,7 +33,7 @@ class StandardsTest {
         File(server, "secret.md").writeText("nope")
 
         val standards = Standards(server.resolve("standards"))
-        standards.sync()
+        runBlocking { standards.sync() }
 
         assertEquals("- kotlin: Kotlin rules", standards.list())
         assertTrue(standards.get("kotlin")!!.contains("No !!"))

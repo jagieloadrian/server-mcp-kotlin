@@ -4,7 +4,7 @@
 - stdio MCP server (Kotlin 2.4.21, `io.modelcontextprotocol:kotlin-sdk-server:0.16.0`, Gradle 9.8.2 wrapper).
 - Tools: `list_standards` (name + first line of each `standards/*.md`), `get_standard(name)`.
 - Server `instructions` tell the client to check standards before writing/reviewing/committing code.
-- Repo sync: fast-forward-only pull (KGit/JGit, `com.github.sya-ri:kgit:1.2.2`) of the repo containing the standards dir, at most every 5 min, triggered by a tool call. On failure it serves the local copy.
+- Repo sync: fast-forward-only pull (KGit/JGit, `com.github.sya-ri:kgit:1.2.2`) of the repo containing the standards dir, at most every 24 h, triggered by a tool call. On failure it serves the local copy.
 - Seed standards: `standards/engineering.md`, `standards/git.md`.
 
 ## Decisions
