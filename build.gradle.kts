@@ -12,7 +12,11 @@ dependencies {
     runtimeOnly("org.slf4j:slf4j-simple:2.0.18")
     runtimeOnly("org.eclipse.jgit:org.eclipse.jgit.ssh.apache:7.7.1.202607240634-r")
     runtimeOnly("org.eclipse.jgit:org.eclipse.jgit.ssh.apache.agent:7.7.1.202607240634-r")
-    testImplementation(kotlin("test"))
+    testImplementation(platform("org.junit:junit-bom:5.14.4"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation("io.kotest:kotest-assertions-core:6.2.6")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.11.0")
 }
 
 kotlin { jvmToolchain(21) }
