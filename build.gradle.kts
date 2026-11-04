@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.ktlint)
+    alias(libs.plugins.jib)
     application
     jacoco
 }
@@ -32,6 +33,45 @@ kotlin {
 }
 
 application { mainClass = "MainKt" }
+
+jib {
+    from {
+        image = "eclipse-temurin:21-jre"
+        platforms {
+            platform {
+                architecture = "amd64"
+                os = "linux"
+            }
+            platform {
+                architecture = "arm64"
+                os = "linux"
+            }
+        }
+    }
+    to {
+        image = "ghcr.io/jagieloadrian/server-mcp-kotlin"
+    }
+    extraDirectories {
+        paths {
+            path {
+                setFrom("standards")
+                into = "/standards"
+            }
+        }
+    }
+    container {
+        args = listOf("/standards")
+        ports = listOf("8080")
+        user = "10001:10001"
+        jvmFlags =
+            listOf(
+                "-XX:MaxRAMPercentage=60",
+                "-XX:+UseSerialGC",
+                "-XX:+ExitOnOutOfMemoryError",
+            )
+        creationTime.set("USE_CURRENT_TIMESTAMP")
+    }
+}
 
 tasks.test {
     useJUnitPlatform()

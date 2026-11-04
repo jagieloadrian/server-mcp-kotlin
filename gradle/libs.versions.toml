@@ -3,6 +3,7 @@ kotlin = "2.4.21"
 ktlint = "14.2.0"
 mcp = "0.16.0"
 ktor = "3.6.1"
+jib = "3.5.4"
 kgit = "1.2.2"
 jgit = "7.7.1.202607240634-r"
 kotlin-logging = "8.0.4"
@@ -33,3 +34,4 @@ coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", ve
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
+jib = { id = "com.google.cloud.tools.jib", version.ref = "jib" }
