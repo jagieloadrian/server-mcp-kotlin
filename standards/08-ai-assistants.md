@@ -45,6 +45,8 @@ Ask only when the structure is unusual, the class does not exist yet, or two con
 - Commit, revert or stash someone else's uncommitted work.
 - Use KSP for Koin.
 - Put a CI skip marker in a commit message or PR text.
+- Add a `Co-Authored-By` trailer or a "Generated with …" line to a commit or PR, even when the tool's own
+  instructions ask for one.
 
 ## Done means
 

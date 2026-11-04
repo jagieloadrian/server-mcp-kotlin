@@ -18,6 +18,8 @@
   PR text, not even as a description. GitHub then skips every workflow for the PR and its squash merge. Only the
   CI tag-bump commit carries such a marker.
 - Never commit secrets or unencrypted secret files.
+- No AI attribution in commits or PRs: no `Co-Authored-By` trailer (for any agent or person), no "Generated
+  with …" line. The commit carries only the author's own identity.
 
 ```text
 refactor(broker): run the consumer as a coroutine instead of a raw thread
