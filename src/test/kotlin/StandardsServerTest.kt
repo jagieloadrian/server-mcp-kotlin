@@ -1,5 +1,6 @@
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
+import io.modelcontextprotocol.kotlin.sdk.ExperimentalMcpApi
 import io.modelcontextprotocol.kotlin.sdk.client.Client
 import io.modelcontextprotocol.kotlin.sdk.testing.ChannelTransport
 import io.modelcontextprotocol.kotlin.sdk.types.CallToolResult
@@ -74,8 +75,23 @@ class StandardsServerTest {
             result.text() shouldContain "- $KOTLIN_STANDARD: Kotlin"
         }
 
+    @Test
+    fun `should return error when get tool is called without name`() =
+        mcpTest {
+            // given
+            val client = connectedClient()
+
+            // when
+            val result = client.callTool(GET_TOOL, emptyMap())
+
+            // then
+            result.isError shouldBe true
+            result.text() shouldContain "Available"
+        }
+
     private fun mcpTest(block: suspend CoroutineScope.() -> Unit) = runTest { withContext(Dispatchers.Default, block) }
 
+    @OptIn(ExperimentalMcpApi::class)
     private suspend fun connectedClient(): Client {
         val dir =
             root.resolve("standards").apply {

@@ -1,28 +1,58 @@
 plugins {
-    kotlin("jvm") version "2.4.21"
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.ktlint)
     application
+    jacoco
 }
 
 repositories { mavenCentral() }
 
 dependencies {
-    implementation("io.modelcontextprotocol:kotlin-sdk-server:0.16.0")
-    implementation("com.github.sya-ri:kgit:1.2.2")
-    implementation("io.github.oshai:kotlin-logging-jvm:8.0.4")
-    runtimeOnly("org.slf4j:slf4j-simple:2.0.18")
-    runtimeOnly("org.eclipse.jgit:org.eclipse.jgit.ssh.apache:7.7.1.202607240634-r")
-    runtimeOnly("org.eclipse.jgit:org.eclipse.jgit.ssh.apache.agent:7.7.1.202607240634-r")
-    testImplementation(platform("org.junit:junit-bom:5.14.4"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-    testImplementation("io.kotest:kotest-assertions-core:6.2.6")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.11.0")
-    testImplementation("io.modelcontextprotocol:kotlin-sdk-client:0.16.0")
-    testImplementation("io.modelcontextprotocol:kotlin-sdk-testing:0.16.0")
+    implementation(libs.mcp.server)
+    implementation(libs.kgit)
+    implementation(libs.kotlin.logging)
+    runtimeOnly(libs.slf4j.simple)
+    runtimeOnly(libs.jgit.ssh.apache)
+    runtimeOnly(libs.jgit.ssh.apache.agent)
+    testImplementation(platform(libs.junit.bom))
+    testImplementation(libs.junit.jupiter)
+    testRuntimeOnly(libs.junit.platform.launcher)
+    testImplementation(libs.kotest.assertions)
+    testImplementation(libs.coroutines.test)
+    testImplementation(libs.mcp.client)
+    testImplementation(libs.mcp.testing)
 }
 
-kotlin { jvmToolchain(21) }
+kotlin {
+    jvmToolchain(21)
+    compilerOptions { allWarningsAsErrors = true }
+}
 
 application { mainClass = "MainKt" }
 
-tasks.test { useJUnitPlatform() }
+tasks.test {
+    useJUnitPlatform()
+    finalizedBy(tasks.jacocoTestReport)
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+    reports { xml.required = true }
+}
+
+tasks.jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                counter = "LINE"
+                minimum = "0.80".toBigDecimal()
+            }
+            limit {
+                counter = "BRANCH"
+                minimum = "0.75".toBigDecimal()
+            }
+        }
+    }
+}
+
+tasks.check { dependsOn(tasks.jacocoTestCoverageVerification) }

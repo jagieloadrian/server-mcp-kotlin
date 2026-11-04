@@ -158,20 +158,23 @@ class StandardsTest {
         }
 
     private fun createRemoteWithServerClone() {
-        KGit.init {
-            setDirectory(origin)
-            setBare(true)
-            setInitialBranch(MAIN_BRANCH)
-        }.close()
-        KGit.init {
-            setDirectory(author)
-            setInitialBranch(MAIN_BRANCH)
-        }.close()
+        KGit
+            .init {
+                setDirectory(origin)
+                setBare(true)
+                setInitialBranch(MAIN_BRANCH)
+            }.close()
+        KGit
+            .init {
+                setDirectory(author)
+                setInitialBranch(MAIN_BRANCH)
+            }.close()
         push("init")
-        KGit.cloneRepository {
-            setURI(origin.toURI().toString())
-            setDirectory(server)
-        }.close()
+        KGit
+            .cloneRepository {
+                setURI(origin.toURI().toString())
+                setDirectory(server)
+            }.close()
         serverStandards.mkdirs()
     }
 
