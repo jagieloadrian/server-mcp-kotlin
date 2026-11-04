@@ -2,10 +2,13 @@
 kotlin = "2.4.21"
 ktlint = "14.2.0"
 mcp = "0.16.0"
+ktor = "3.6.1"
+jib = "3.5.4"
 kgit = "1.2.2"
 jgit = "7.7.1.202607240634-r"
 kotlin-logging = "8.0.4"
-slf4j = "2.0.18"
+logback = "1.6.6"
+logstash-logback = "9.0"
 junit = "5.14.4"
 kotest = "6.2.6"
 coroutines = "1.11.0"
@@ -17,8 +20,11 @@ mcp-testing = { module = "io.modelcontextprotocol:kotlin-sdk-testing", version.r
 kgit = { module = "com.github.sya-ri:kgit", version.ref = "kgit" }
 jgit-ssh-apache = { module = "org.eclipse.jgit:org.eclipse.jgit.ssh.apache", version.ref = "jgit" }
 jgit-ssh-apache-agent = { module = "org.eclipse.jgit:org.eclipse.jgit.ssh.apache.agent", version.ref = "jgit" }
+ktor-server-cio = { module = "io.ktor:ktor-server-cio", version.ref = "ktor" }
+ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
 kotlin-logging = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "kotlin-logging" }
-slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+logstash-logback-encoder = { module = "net.logstash.logback:logstash-logback-encoder", version.ref = "logstash-logback" }
 junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
@@ -28,3 +34,4 @@ coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", ve
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
+jib = { id = "com.google.cloud.tools.jib", version.ref = "jib" }

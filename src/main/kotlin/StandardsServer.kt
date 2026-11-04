@@ -1,5 +1,10 @@
+import io.ktor.server.application.Application
+import io.ktor.server.response.respondText
+import io.ktor.server.routing.get
+import io.ktor.server.routing.routing
 import io.modelcontextprotocol.kotlin.sdk.server.Server
 import io.modelcontextprotocol.kotlin.sdk.server.ServerOptions
+import io.modelcontextprotocol.kotlin.sdk.server.mcpStatelessStreamableHttp
 import io.modelcontextprotocol.kotlin.sdk.types.CallToolResult
 import io.modelcontextprotocol.kotlin.sdk.types.Implementation
 import io.modelcontextprotocol.kotlin.sdk.types.ServerCapabilities
@@ -14,6 +19,9 @@ import kotlinx.serialization.json.putJsonObject
 internal const val LIST_TOOL = "list_standards"
 internal const val GET_TOOL = "get_standard"
 internal const val NAME_ARGUMENT = "name"
+internal const val MCP_PATH = "/mcp"
+internal const val LIVE_PATH = "/health/live"
+internal const val READY_PATH = "/health/ready"
 private const val SERVER_NAME = "standards"
 private const val SERVER_VERSION = "1.0.0"
 
@@ -59,3 +67,14 @@ internal fun standardsServer(standards: Standards): Server =
             CallToolResult(listOf(TextContent(text)))
         }
     }
+
+internal fun Application.standardsHttp(
+    standards: Standards,
+    allowedHosts: List<String>,
+) {
+    routing {
+        get(LIVE_PATH) { call.respondText("OK") }
+        get(READY_PATH) { call.respondText("OK") }
+    }
+    mcpStatelessStreamableHttp(path = MCP_PATH, allowedHosts = allowedHosts) { standardsServer(standards) }
+}

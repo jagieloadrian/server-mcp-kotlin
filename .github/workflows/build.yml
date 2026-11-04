@@ -1,0 +1,74 @@
+name: build
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+    tags: ['v*']
+
+permissions:
+  contents: write
+  packages: write
+
+env:
+  IMAGE: ghcr.io/jagieloadrian/server-mcp-kotlin
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/create-github-app-token@v3
+        id: app-token
+        if: github.ref == 'refs/heads/main' && vars.DEPLOY_APP_CLIENT_ID != ''
+        with:
+          client-id: ${{ vars.DEPLOY_APP_CLIENT_ID }}
+          private-key: ${{ secrets.DEPLOY_APP_PRIVATE_KEY }}
+          permission-contents: write
+
+      - uses: actions/checkout@v7
+        with:
+          token: ${{ steps.app-token.outputs.token || github.token }}
+
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Test
+        run: ./gradlew check build
+
+      - name: Upload test reports
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: tests-result
+          path: build/reports/tests
+
+      - name: Compute image tag
+        if: github.event_name != 'pull_request'
+        id: tag
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            echo "tag=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag=main-$(date -u +%Y%m%d%H%M%S)-${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build and push multi-arch image
+        if: github.event_name != 'pull_request'
+        run: >
+          ./gradlew jib
+          -Djib.to.image=${{ env.IMAGE }}:${{ steps.tag.outputs.tag }}
+          -Djib.to.auth.username=${{ github.actor }}
+          -Djib.to.auth.password=${{ secrets.GITHUB_TOKEN }}
+
+      - name: Deploy (bump image tag)
+        if: github.ref == 'refs/heads/main'
+        run: |
+          sed -i -E "s#(image: ${{ env.IMAGE }}):[^[:space:]]+#\1:${{ steps.tag.outputs.tag }}#" .devops/helm/release.yaml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -am "chore(deploy): ${{ steps.tag.outputs.tag }} [skip ci]"
+          git pull --rebase && git push
