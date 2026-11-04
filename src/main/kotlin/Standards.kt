@@ -1,29 +1,33 @@
+import com.github.syari.kgit.KGit
+import org.eclipse.jgit.api.MergeCommand.FastForwardMode
+import org.eclipse.jgit.storage.file.FileRepositoryBuilder
 import java.io.File
-import java.util.concurrent.TimeUnit
 
 // ponytail: pull at most every 5 min, lazily on tool call; add a background poller if docs must refresh while idle
 const val SYNC_INTERVAL_MS = 5 * 60 * 1000L
 
-class Standards(private val dir: File) {
+class Standards(dir: File) {
+    private val dir = dir.absoluteFile // relative File has null parent, so findGitDir couldn't walk up
     private var lastSync = 0L
 
-    /** `git pull --ff-only` in [dir]; never merges or touches local changes. Failure = serve local copy. */
+    /** Fast-forward-only pull of the repo containing [dir]; never merges or touches local changes. Failure = serve local copy. */
     @Synchronized
     fun sync() {
         val now = System.currentTimeMillis()
         if (now - lastSync < SYNC_INTERVAL_MS) return
         lastSync = now
         runCatching {
-            val p = ProcessBuilder("git", "-C", dir.path, "pull", "--ff-only", "--quiet")
-                .redirectOutput(ProcessBuilder.Redirect.DISCARD) // stdout belongs to MCP protocol
-                .redirectError(ProcessBuilder.Redirect.INHERIT)
-                .apply { environment()["GIT_TERMINAL_PROMPT"] = "0" }
-                .start()
-            when {
-                !p.waitFor(15, TimeUnit.SECONDS) -> { p.destroyForcibly(); log("git pull timed out") }
-                p.exitValue() != 0 -> log("git pull failed (exit ${p.exitValue()}), serving local copy")
+            // dir may be a subfolder (repo/standards), so search upward for .git
+            val gitDir = FileRepositoryBuilder().findGitDir(dir).gitDir ?: return log("$dir is not in a git repo, serving local files")
+            KGit.open(gitDir).use { git ->
+                val result = git.pull {
+                    setRebase(false) // ignore pull.rebase from user config
+                    setFastForward(FastForwardMode.FF_ONLY)
+                    setTimeout(15)
+                }
+                if (!result.isSuccessful) log("git pull not applied (${result.mergeResult?.mergeStatus}), serving local copy")
             }
-        }.onFailure { log("git pull error: ${it.message}") }
+        }.onFailure { log("git pull failed: ${it.message}, serving local copy") }
     }
 
     fun list(): String =

@@ -1,3 +1,4 @@
+import com.github.syari.kgit.KGit
 import java.io.File
 import kotlin.io.path.createTempDirectory
 import kotlin.test.Test
@@ -6,31 +7,31 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class StandardsTest {
-    private fun git(dir: File, vararg args: String) {
-        val p = ProcessBuilder("git", "-c", "user.name=t", "-c", "user.email=t@t", *args)
-            .directory(dir).redirectErrorStream(true).start()
-        val out = p.inputStream.bufferedReader().readText()
-        check(p.waitFor() == 0) { "git ${args.joinToString(" ")}: $out" }
-    }
-
     @Test
     fun `pulls changes pushed to remote and blocks path escape`() {
         val root = createTempDirectory("standards").toFile()
-        val origin = root.resolve("origin.git").apply { mkdirs() }
-        git(origin, "init", "--bare", "-q")
-        git(root, "clone", "-q", origin.path, "author")
-        val author = root.resolve("author")
-        git(author, "commit", "-q", "--allow-empty", "-m", "init")
-        git(author, "push", "-q", "origin", "HEAD")
-        git(root, "clone", "-q", origin.path, "server") // server copy is now behind the next push
-        File(root, "secret.md").writeText("nope")
+        val origin = root.resolve("origin.git")
+        KGit.init { setDirectory(origin); setBare(true); setInitialBranch("main") }.close()
+        val authorDir = root.resolve("author")
+        val server = root.resolve("server")
 
-        author.resolve("kotlin.md").writeText("# Kotlin rules\nNo !!")
-        git(author, "add", ".")
-        git(author, "commit", "-qm", "add kotlin")
-        git(author, "push", "-q", "origin", "HEAD")
+        KGit.init { setDirectory(authorDir); setInitialBranch("main") }.use { author ->
+            fun commitAndPush(msg: String) {
+                author.add { addFilepattern(".") }
+                author.commit { message = msg; setAuthor("t", "t@t"); setAllowEmpty(true) }
+                author.push { remote = origin.toURI().toString(); add("main") }
+            }
+            commitAndPush("init")
+            KGit.cloneRepository { setURI(origin.toURI().toString()); setDirectory(server) }.close()
+            // server copy is now behind the next push; standards live in a subfolder like the real repo
+            authorDir.resolve("standards").mkdirs()
+            authorDir.resolve("standards/kotlin.md").writeText("# Kotlin rules\nNo !!")
+            commitAndPush("add kotlin")
+        }
+        server.resolve("standards").mkdirs()
+        File(server, "secret.md").writeText("nope")
 
-        val standards = Standards(root.resolve("server"))
+        val standards = Standards(server.resolve("standards"))
         standards.sync()
 
         assertEquals("- kotlin: Kotlin rules", standards.list())

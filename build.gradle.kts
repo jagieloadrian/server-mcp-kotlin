@@ -7,6 +7,10 @@ repositories { mavenCentral() }
 
 dependencies {
     implementation("io.modelcontextprotocol:kotlin-sdk-server:0.16.0")
+    implementation("com.github.sya-ri:kgit:1.2.2")
+    // JGit core has no SSH transport; these add it (git@github.com remotes) plus ssh-agent keys
+    runtimeOnly("org.eclipse.jgit:org.eclipse.jgit.ssh.apache:7.7.1.202607240634-r")
+    runtimeOnly("org.eclipse.jgit:org.eclipse.jgit.ssh.apache.agent:7.7.1.202607240634-r")
     testImplementation(kotlin("test"))
 }
 
