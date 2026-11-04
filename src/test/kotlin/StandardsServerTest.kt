@@ -102,6 +102,6 @@ class StandardsServerTest {
         standardsServer(Standards(dir)).createSession(transports.serverTransport)
         return Client(Implementation(name = "test", version = "1.0.0")).apply { connect(transports.clientTransport) }
     }
-
-    private fun CallToolResult.text() = content.filterIsInstance<TextContent>().joinToString("\n") { it.text }
 }
+
+internal fun CallToolResult.text() = content.filterIsInstance<TextContent>().joinToString("\n") { it.text }

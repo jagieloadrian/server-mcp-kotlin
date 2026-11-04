@@ -2,6 +2,7 @@
 kotlin = "2.4.21"
 ktlint = "14.2.0"
 mcp = "0.16.0"
+ktor = "3.6.1"
 kgit = "1.2.2"
 jgit = "7.7.1.202607240634-r"
 kotlin-logging = "8.0.4"
@@ -18,6 +19,8 @@ mcp-testing = { module = "io.modelcontextprotocol:kotlin-sdk-testing", version.r
 kgit = { module = "com.github.sya-ri:kgit", version.ref = "kgit" }
 jgit-ssh-apache = { module = "org.eclipse.jgit:org.eclipse.jgit.ssh.apache", version.ref = "jgit" }
 jgit-ssh-apache-agent = { module = "org.eclipse.jgit:org.eclipse.jgit.ssh.apache.agent", version.ref = "jgit" }
+ktor-server-cio = { module = "io.ktor:ktor-server-cio", version.ref = "ktor" }
+ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
 kotlin-logging = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "kotlin-logging" }
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 logstash-logback-encoder = { module = "net.logstash.logback:logstash-logback-encoder", version.ref = "logstash-logback" }

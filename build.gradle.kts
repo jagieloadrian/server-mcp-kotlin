@@ -9,6 +9,7 @@ repositories { mavenCentral() }
 
 dependencies {
     implementation(libs.mcp.server)
+    implementation(libs.ktor.server.cio)
     implementation(libs.kgit)
     implementation(libs.kotlin.logging)
     runtimeOnly(libs.logback.classic)
@@ -22,6 +23,7 @@ dependencies {
     testImplementation(libs.coroutines.test)
     testImplementation(libs.mcp.client)
     testImplementation(libs.mcp.testing)
+    testImplementation(libs.ktor.server.test.host)
 }
 
 kotlin {
@@ -35,6 +37,14 @@ tasks.test {
     useJUnitPlatform()
     finalizedBy(tasks.jacocoTestReport)
 }
+
+val coverageClasses =
+    sourceSets.main
+        .get()
+        .output.classesDirs.asFileTree
+        .matching { exclude("MainKt*") }
+
+tasks.withType<JacocoReportBase>().configureEach { classDirectories.setFrom(coverageClasses) }
 
 tasks.jacocoTestReport {
     dependsOn(tasks.test)
