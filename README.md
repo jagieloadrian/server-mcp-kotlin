@@ -64,8 +64,9 @@ The image contains the standards at `/standards`, so a standards change reaches 
 First deploy:
 
 1. In homelab-infra: `scripts/new-app.sh own server-mcp-kotlin`, then merge.
-2. After the first build on `main`, make the GHCR package `server-mcp-kotlin` public.
-3. Protected `main`: set `DEPLOY_APP_CLIENT_ID` and `DEPLOY_APP_PRIVATE_KEY` as in homelab-infra `docs/apps.md`.
+2. Protected `main`: set `DEPLOY_APP_CLIENT_ID` and `DEPLOY_APP_PRIVATE_KEY` as in homelab-infra `docs/apps.md`.
+
+The GHCR package can stay private: the cluster pulls with Secret `ghcr-pull` from homelab-infra (`docs/setup.md`, step 3).
 
 Local preview of the manifests:
 
