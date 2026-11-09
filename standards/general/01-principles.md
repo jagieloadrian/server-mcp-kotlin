@@ -47,6 +47,14 @@ diff in the wrong place is a second bug.
 - Do not change behaviour as a side effect of a refactor. If a refactor would change behaviour (for example
   adding an organisation filter to every query), leave it and record it in PROJECT-STATUS.md.
 
+## No comments
+
+- No `//`, no `/* */`, no `#` comments, no doc comments (KDoc, Javadoc), no `TODO`, no `ponytail:` markers. This
+  covers every language, build scripts, YAML, shell, Dockerfiles, workflows and code blocks in Markdown.
+- Allowed: `// given`, `// when`, `// then` in tests, shebangs, `<!-- SPECKIT START -->` / `<!-- SPECKIT END -->`
+  and the IntelliJ `<!-- Plugin description -->` markers.
+- Names explain what code does. The reason for a choice goes into the commit body.
+
 ## Language
 
 - Code, identifiers, commit messages, PRs, README and `.docs` are in English.

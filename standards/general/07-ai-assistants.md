@@ -1,6 +1,6 @@
 # AI Assistants
 
-Rules for Claude and other agents working in these repos. They add to files 01â€“07.
+Rules for Claude and other agents working in these repos. They add to the other files in `general/` and the language directories.
 
 ## Style
 
@@ -19,7 +19,7 @@ Rules for Claude and other agents working in these repos. They add to files 01â€
 
 ## Writing tests
 
-Explore before writing. The structure may differ from what [05-testing.md](05-testing.md) shows.
+Explore before writing. The structure may differ from what [03-testing.md](03-testing.md) shows.
 
 1. Identify the project type: Ktor (`EngineMain`), Compose Multiplatform, IntelliJ plugin, plain CLI
    (`fun main`), and whether it is multi-module (`settings.gradle.kts`).

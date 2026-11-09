@@ -1,51 +1,73 @@
 # Coding Standards
 
-Shared rules for my Kotlin projects. They come from how the projects are built today and from corrections made
+Shared rules for my projects. They come from how the projects are built today and from corrections made
 while working on them.
 
-## Files
+## Layout
+
+- `general/`: rules for every project and language.
+- `<language>/`: how the general rules apply in one language, plus its own idioms, tools and frameworks. Today
+  only `kotlin/`. A new language gets its own directory with the same kind of files.
+
+The MCP server names each standard by its path without `.md`, for example `kotlin/02-coroutines`.
+
+### general
 
 | File | Covers |
 |------|--------|
-| [01-principles.md](01-principles.md) | YAGNI, KISS, DRY, SOLID, minimal change, language of code and docs |
-| [02-kotlin.md](02-kotlin.md) | Kotlin style, ktlint, no comments, null safety, files, visibility, coroutines |
-| [03-backend-ktor.md](03-backend-ktor.md) | Ktor services: config, validation, errors, DI, database, observability, messaging |
-| [04-compose-multiplatform.md](04-compose-multiplatform.md) | Compose Multiplatform clients: shared code, UI layer, Koin, platform code |
-| [05-testing.md](05-testing.md) | What to test, naming, given/when/then, mocking, Testcontainers, coverage, checklist |
-| [06-git-workflow.md](06-git-workflow.md) | Branches, commits, verification, pushing, PROJECT-STATUS.md, spec-kit flow |
-| [07-devops-homelab.md](07-devops-homelab.md) | Images, Helm/Flux deploy, runtime contract, secrets, local compose |
-| [08-ai-assistants.md](08-ai-assistants.md) | Rules for Claude and other agents working in these repos |
-| [09-ui-ux.md](09-ui-ux.md) | Typography, colour and contrast, spacing, states, forms, content, accessibility, release checklist |
+| [01-principles.md](general/01-principles.md) | YAGNI, KISS, DRY, SOLID, minimal change, no comments, language of code and docs |
+| [02-git-workflow.md](general/02-git-workflow.md) | Branches, commits, verification, pushing, PROJECT-STATUS.md, spec-kit flow |
+| [03-testing.md](general/03-testing.md) | What to test, naming, given/when/then, mocking, real dependencies, coverage, checklist |
+| [04-backend.md](general/04-backend.md) | Backend layout, config, validation, errors, database, observability, messaging, security |
+| [05-ui-ux.md](general/05-ui-ux.md) | Typography, colour and contrast, spacing, states, forms, content, accessibility, release checklist |
+| [06-devops-homelab.md](general/06-devops-homelab.md) | Images, Helm/Flux deploy, runtime contract, secrets, local compose |
+| [07-ai-assistants.md](general/07-ai-assistants.md) | Rules for Claude and other agents working in these repos |
+
+### kotlin
+
+| File | Covers |
+|------|--------|
+| [01-language.md](kotlin/01-language.md) | Null safety, files and packages, declarations, errors, logging |
+| [02-coroutines.md](kotlin/02-coroutines.md) | Coroutine rules |
+| [03-build.md](kotlin/03-build.md) | Gradle, ktlint, `.editorconfig`, warnings as errors, JVM toolchain, versions |
+| [04-ktor.md](kotlin/04-ktor.md) | Ktor config, validation, StatusPages, DI, OpenAPI, logging, shutdown |
+| [05-persistence.md](kotlin/05-persistence.md) | Exposed, Flyway, pgjdbc |
+| [06-compose-multiplatform.md](kotlin/06-compose-multiplatform.md) | Compose Multiplatform clients: shared code, UI layer, Koin, platform code |
+| [07-testing.md](kotlin/07-testing.md) | Kotest, JUnit 5, MockK, assertions, `testApplication`, coroutine tests, Koin, coverage tools |
 
 Testing and UI come from `~/Documents/AI/specs/TEST_SPECIFICATION.md` and `~/Documents/AI/Czytelny Interfejs.md`.
 
 ## Projects
 
-| Project | Stack | Files |
-|---------|-------|-------|
-| StatisticsService | Ktor 3, Exposed, Flyway, PostgreSQL, Kafka / NATS JetStream | 01–08 |
-| Statistics-UI | Compose Multiplatform (wasmJs, js, JVM desktop), Ktor client, Koin | 01, 02, 04–09 |
-| mon-home-ass | Ktor 3, Exposed, read-only PostgreSQL (Home Assistant recorder), OpenAPI | 01–03, 05–08 |
-| SmartConnectLumBunny | KMP (Android + desktop JVM), Compose, Koin, BLE | 01, 02, 04–06, 08, 09 |
-| DatabaseScheduleExecutor | Kotlin JVM CLI, JDBC (6 vendors), cron-utils, shadow jar | 01, 02, 05, 06, 08 |
-| darksouls-progress-bar | IntelliJ Platform plugin, Kotlin + Java | 01, 02, 05, 06, 08, 09 |
+All projects follow `general/01`, `02`, `03` and `07`, and `kotlin/01`–`03` and `07`.
+
+| Project | Stack | Also |
+|---------|-------|------|
+| StatisticsService | Ktor 3, Exposed, Flyway, PostgreSQL, Kafka / NATS JetStream | general/04, 06; kotlin/04, 05 |
+| Statistics-UI | Compose Multiplatform (wasmJs, js, JVM desktop), Ktor client, Koin | general/05, 06; kotlin/06 |
+| mon-home-ass | Ktor 3, Exposed, read-only PostgreSQL (Home Assistant recorder), OpenAPI | general/04, 06; kotlin/04, 05 |
+| SmartConnectLumBunny | KMP (Android + desktop JVM), Compose, Koin, BLE | general/05; kotlin/06 |
+| DatabaseScheduleExecutor | Kotlin JVM CLI, JDBC (6 vendors), cron-utils, shadow jar | none |
+| darksouls-progress-bar | IntelliJ Platform plugin, Kotlin + Java | general/05 |
+| server-mcp-kotlin | Ktor CIO, MCP Kotlin SDK, KGit | general/06 |
 
 ## Precedence
 
 1. An explicit request in the current task.
 2. The project's `.specify/memory/constitution.md` and `CLAUDE.md`.
 3. These files.
-4. [Kotlin coding conventions](https://kotlinlang.org/docs/coding-conventions.html).
+4. The language's official conventions, for Kotlin the
+   [Kotlin coding conventions](https://kotlinlang.org/docs/coding-conventions.html).
 
 ## Known divergences
 
 - SmartConnectLumBunny: its constitution still allows one-line code comments (at most 120 characters), and the
-  code has `!!` uses. Either amend the constitution to match [02-kotlin.md](02-kotlin.md) or keep it as a
-  documented exception.
+  code has `!!` uses. Either amend the constitution to match [general/01-principles.md](general/01-principles.md)
+  and [kotlin/01-language.md](kotlin/01-language.md) or keep it as a documented exception.
 - `allWarningsAsErrors` is set only in StatisticsService.
-- Test names: [05-testing.md](05-testing.md) asks for `should <action> when <condition>`. Existing tests in
-  StatisticsService, Statistics-UI and DatabaseScheduleExecutor use free sentences, and darksouls-progress-bar uses
-  both styles. New tests follow the rule; old ones are renamed only when touched.
+- Test names: [general/03-testing.md](general/03-testing.md) asks for `should <action> when <condition>`.
+  Existing tests in StatisticsService, Statistics-UI and DatabaseScheduleExecutor use free sentences, and
+  darksouls-progress-bar uses both styles. New tests follow the rule; old ones are renamed only when touched.
 - The homelab contract (`~/Development/homelab/Homelab Platform Contract — wymagania dla aplikacji.md`) still
   describes SOPS secrets. The apps already use Vault through ExternalSecret, see
-  [07-devops-homelab.md](07-devops-homelab.md).
+  [general/06-devops-homelab.md](general/06-devops-homelab.md).
