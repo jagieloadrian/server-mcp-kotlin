@@ -28,7 +28,7 @@ The MCP server names each standard by its path without `.md`, for example `kotli
 | File | Covers |
 |------|--------|
 | [01-language.md](kotlin/01-language.md) | Null safety, Java interop, declarations, value classes, idioms, errors, logging |
-| [02-coroutines.md](kotlin/02-coroutines.md) | Coroutine rules |
+| [02-coroutines.md](kotlin/02-coroutines.md) | Ownership and scopes, blocking calls, cancellation, Flow primitives |
 | [03-build.md](kotlin/03-build.md) | Gradle, ktlint, `.editorconfig`, warnings as errors, JVM toolchain, versions |
 | [04-ktor.md](kotlin/04-ktor.md) | Ktor config, validation, StatusPages, DI, OpenAPI, logging, shutdown |
 | [05-persistence.md](kotlin/05-persistence.md) | Exposed, Flyway, pgjdbc |
