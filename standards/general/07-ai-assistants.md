@@ -28,7 +28,9 @@ Explore before writing. The structure may differ from what [03-testing.md](03-te
 4. Check which test libraries exist in `build.gradle.kts` / `libs.versions.toml` (`io.kotest`, `io.mockk`,
    `junit-jupiter`, Testcontainers). Use only those.
 5. Put the test in the package that mirrors the class, following the existing convention.
-6. Say in the summary which structure and framework were chosen and why.
+6. For new logic or a bug fix, write the test first and run it to see it fail before writing the code
+   ([03-testing.md](03-testing.md), Test first).
+7. Say in the summary which structure and framework were chosen and why.
 
 Ask only when the structure is unusual, the class does not exist yet, or two conventions conflict.
 

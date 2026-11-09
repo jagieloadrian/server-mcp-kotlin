@@ -10,6 +10,7 @@ libraries and commands are in the language directory, for Kotlin [../kotlin/07-t
   path) ships with a test.
 - Test core flows and contract shapes, not every line. No tests for trivial getters or one-liners.
 - A bug fix comes with the test that fails without it.
+- Every protected route has a test that calls it without credentials and expects 401.
 - Test at the layer the code lives in: protocol framing and crypto get parity tests against known vectors, domain
   logic gets unit tests, flows that cross the database or a broker get integration tests.
 
@@ -21,6 +22,15 @@ Scenarios to cover for each unit:
 4. Business rules and validation.
 5. Integration points: calls to dependencies.
 6. Boundary conditions.
+
+## Test first
+
+- New logic and bug fixes are written test first:
+  1. RED: write the test, run it and see it fail for the expected reason.
+  2. GREEN: write the minimum code that makes it pass.
+  3. REFACTOR: clean up with the tests green.
+- Never skip the failing run. A test that was never seen failing proves nothing.
+- Exempt: code without logic of its own (wiring, config classes, generated code).
 
 ## Naming
 
@@ -42,6 +52,7 @@ Scenarios to cover for each unit:
 - In unit tests, mock external systems (database, HTTP APIs, file system) and collaborators. Integration tests use
   the real dependency (see below).
 - Use relaxed mocks for dependencies whose behaviour does not matter to the test.
+- Never mock value types (data classes, DTOs). Build real instances.
 - Verify only the calls that matter, with an exact count when the count is part of the behaviour.
 
 ## Real dependencies
@@ -54,6 +65,9 @@ Scenarios to cover for each unit:
 ## Principles
 
 - One concept per test.
+- Test behaviour through the public API, not implementation details. No tests that reach private functions.
+- No sleeps. Drive time through the test clock.
+- A flaky test is fixed or removed at once, never ignored or retried until green.
 - Tests are independent of each other and deterministic.
 - Unit tests are fast, under 100 ms each.
 - Repeated setup goes into helper functions, test data builders and shared fixtures, not into copies.
@@ -74,6 +88,7 @@ Scenarios to cover for each unit:
 
 ## Checklist for a new test
 
+- [ ] The test was run and seen failing before the code that makes it pass.
 - [ ] Name follows `should <action> when <condition>`.
 - [ ] Body has `// given`, `// when`, `// then` markers and no other comments.
 - [ ] Dependencies are mocked (unit) or real through Testcontainers (integration).

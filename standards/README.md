@@ -17,7 +17,7 @@ The MCP server names each standard by its path without `.md`, for example `kotli
 |------|--------|
 | [01-principles.md](general/01-principles.md) | YAGNI, KISS, DRY, SOLID, minimal change, no comments, language of code and docs |
 | [02-git-workflow.md](general/02-git-workflow.md) | Branches, commits, verification, pushing, PROJECT-STATUS.md, spec-kit flow |
-| [03-testing.md](general/03-testing.md) | What to test, naming, given/when/then, mocking, real dependencies, coverage, checklist |
+| [03-testing.md](general/03-testing.md) | What to test, test first (TDD), naming, given/when/then, mocking, real dependencies, coverage, checklist |
 | [04-backend.md](general/04-backend.md) | Backend layout, config, validation, errors, database, observability, messaging, security |
 | [05-ui-ux.md](general/05-ui-ux.md) | Typography, colour and contrast, spacing, states, forms, content, accessibility, release checklist |
 | [06-devops-homelab.md](general/06-devops-homelab.md) | Images, Helm/Flux deploy, runtime contract, secrets, local compose |

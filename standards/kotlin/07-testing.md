@@ -92,6 +92,8 @@ class UserServiceTest {
 
 - Kotest: create mocks by hand with `mockk<T>()` and constructor injection.
 - `just Runs` for `Unit` stubs. `verify(exactly = n)` when the count is part of the behaviour.
+- `coEvery` / `coVerify` for suspend functions. `slot<T>()` with `capture()` to inspect an argument.
+- Never `mockk` a data class. Build a real instance.
 
 ## Assertions
 
@@ -113,7 +115,8 @@ shouldThrow<ValidationException> { validator.validate(input) }
 
 ## Coroutines
 
-- `runTest` with virtual time. No `Thread.sleep`.
+- `runTest` with virtual time. No `Thread.sleep`; advance with `advanceTimeBy` / `advanceUntilIdle`.
+- Flows: collect a bounded part (`take(n).toList()`), or collect in `backgroundScope` and assert on the values.
 - A coroutine in `backgroundScope` that waits on `tryEmit` is not resumed by `advanceUntilIdle()`. Drive it with
   `advanceTimeBy(n)` and `runCurrent()`, and check `testScheduler.currentTime` before blaming the code.
 - Waits on thread-bound code use a `CountDownLatch` with a timeout.
@@ -126,7 +129,8 @@ shouldThrow<ValidationException> { validator.validate(input) }
 ## Parameterized and property tests
 
 - Many similar cases: Kotest `withData` or JUnit `@ParameterizedTest`.
-- Property-based tests: Kotest `checkAll`.
+- Property-based tests: Kotest `checkAll` with `Arb` generators.
+- One Kotest spec style per project (`FunSpec`).
 
 ## Coverage tools
 
