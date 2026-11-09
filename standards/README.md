@@ -29,13 +29,14 @@ The MCP server names each standard by its path without `.md`, for example `kotli
 |------|--------|
 | [01-language.md](kotlin/01-language.md) | Null safety, Java interop, declarations, value classes, idioms, errors, logging |
 | [02-coroutines.md](kotlin/02-coroutines.md) | Ownership and scopes, blocking calls, cancellation, Flow primitives |
-| [03-build.md](kotlin/03-build.md) | Gradle, ktlint, `.editorconfig`, warnings as errors, JVM toolchain, versions |
+| [03-build.md](kotlin/03-build.md) | Gradle, ktlint, `.editorconfig`, warnings as errors, JVM toolchain, versions; Kotlin Toolchain projects |
 | [04-ktor.md](kotlin/04-ktor.md) | Ktor routes, config, validation, StatusPages, DI, WebSockets, OpenAPI, logging, shutdown |
 | [05-persistence.md](kotlin/05-persistence.md) | Exposed (DSL, migrations, batching, `LIKE` escaping), Flyway, pgjdbc, JPA and Hibernate entities |
 | [06-compose-multiplatform.md](kotlin/06-compose-multiplatform.md) | Compose Multiplatform clients: shared code, UI layer, Koin, platform code |
 | [07-testing.md](kotlin/07-testing.md) | Kotest, JUnit 5, MockK, assertions, `testApplication`, coroutine tests, Koin, coverage tools |
 | [08-spring-boot.md](kotlin/08-spring-boot.md) | Spring Boot: build plugins, injection, config, Bean Validation, transactions, test slices |
 | [09-java-to-kotlin.md](kotlin/09-java-to-kotlin.md) | Converting Java files: four passes, checklist, interop and framework pitfalls |
+| [10-apollo-graphql.md](kotlin/10-apollo-graphql.md) | Apollo Kotlin: setup, client, operations, errors, normalized cache |
 
 Testing and UI come from `~/Documents/AI/specs/TEST_SPECIFICATION.md` and `~/Documents/AI/Czytelny Interfejs.md`.
 
