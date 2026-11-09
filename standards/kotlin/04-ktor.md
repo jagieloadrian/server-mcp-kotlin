@@ -3,6 +3,11 @@
 Applies to StatisticsService and mon-home-ass. Framework-neutral backend rules:
 [../general/04-backend.md](../general/04-backend.md).
 
+## Routes
+
+- One `fun Route.orderRoutes()` extension per feature, installed from the module. Routes stay thin: read the
+  request, call the service, respond.
+
 ## Configuration
 
 - `EngineMain` with `application.yaml`; values come from env vars.
@@ -21,7 +26,13 @@ check(problems.isEmpty()) { "Invalid configuration: ${problems.joinToString("; "
 
 ## Errors
 
-- StatusPages maps every error to the shared error body.
+- StatusPages maps every error to the shared error body: `exception<Throwable>` logs and answers 500,
+  `status(HttpStatusCode.NotFound)` covers unknown routes.
+
+## WebSockets
+
+- `install(WebSockets)` with explicit `pingPeriod`, `timeout` and `maxFrameSize`.
+- Remove a session from any shared registry in `finally`. Skip frame types the endpoint does not handle.
 
 ## Dependency injection
 

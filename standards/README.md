@@ -18,7 +18,7 @@ The MCP server names each standard by its path without `.md`, for example `kotli
 | [01-principles.md](general/01-principles.md) | YAGNI, KISS, DRY, SOLID, minimal change, no comments, language of code and docs |
 | [02-git-workflow.md](general/02-git-workflow.md) | Branches, commits, verification, pushing, PROJECT-STATUS.md, spec-kit flow |
 | [03-testing.md](general/03-testing.md) | What to test, test first (TDD), naming, given/when/then, mocking, real dependencies, coverage, checklist |
-| [04-backend.md](general/04-backend.md) | Backend layout, config, validation, errors, database, observability, messaging, security |
+| [04-backend.md](general/04-backend.md) | Package by feature, config, validation, errors, database, observability, messaging, security |
 | [05-ui-ux.md](general/05-ui-ux.md) | Typography, colour and contrast, spacing, states, forms, content, accessibility, release checklist |
 | [06-devops-homelab.md](general/06-devops-homelab.md) | Images, Helm/Flux deploy, runtime contract, secrets, local compose |
 | [07-ai-assistants.md](general/07-ai-assistants.md) | Rules for Claude and other agents working in these repos |
@@ -30,8 +30,8 @@ The MCP server names each standard by its path without `.md`, for example `kotli
 | [01-language.md](kotlin/01-language.md) | Null safety, Java interop, declarations, value classes, idioms, errors, logging |
 | [02-coroutines.md](kotlin/02-coroutines.md) | Ownership and scopes, blocking calls, cancellation, Flow primitives |
 | [03-build.md](kotlin/03-build.md) | Gradle, ktlint, `.editorconfig`, warnings as errors, JVM toolchain, versions |
-| [04-ktor.md](kotlin/04-ktor.md) | Ktor config, validation, StatusPages, DI, OpenAPI, logging, shutdown |
-| [05-persistence.md](kotlin/05-persistence.md) | Exposed, Flyway, pgjdbc |
+| [04-ktor.md](kotlin/04-ktor.md) | Ktor routes, config, validation, StatusPages, DI, WebSockets, OpenAPI, logging, shutdown |
+| [05-persistence.md](kotlin/05-persistence.md) | Exposed (DSL, migrations, batching, `LIKE` escaping), Flyway, pgjdbc |
 | [06-compose-multiplatform.md](kotlin/06-compose-multiplatform.md) | Compose Multiplatform clients: shared code, UI layer, Koin, platform code |
 | [07-testing.md](kotlin/07-testing.md) | Kotest, JUnit 5, MockK, assertions, `testApplication`, coroutine tests, Koin, coverage tools |
 

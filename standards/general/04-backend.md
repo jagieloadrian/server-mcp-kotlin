@@ -5,17 +5,23 @@ Applies to every backend service. Framework specifics: [../kotlin/04-ktor.md](..
 
 ## Layout
 
-| Package | Holds |
-|---------|-------|
-| `controller` | Routes and error mapping. No business rules, no validation calls |
-| `service` | Business rules |
-| `repository` | Database queries |
+- New projects: one package per feature or domain (`order`, `user`, `ingest`). The layer shows in the file name
+  (`OrderRoutes`, `OrderService`, `OrderRepository`); data classes go into `<feature>/model`, DTOs into
+  `<feature>/model/dto`.
+- Existing projects keep their layer-first layout below. Moving them needs a reason in the commit body.
+- Shared infrastructure stays outside the feature packages in both layouts.
+
+| Layer | Holds |
+|-------|-------|
+| `controller` / `*Routes` | Routes and error mapping. No business rules, no validation calls |
+| `service` / `*Service` | Business rules |
+| `repository` / `*Repository` | Database queries |
 | `model`, `model/dto` | Data classes, API DTOs |
 | `validation` | Request validation rules and shared validation helpers |
-| `config` | Loading and validating configuration |
-| `di` | DI wiring, monitoring, framework setup |
-| `db` | Connection pool, migrations, transactions |
-| `exception` | Typed API exceptions |
+| `config` (shared) | Loading and validating configuration |
+| `di` (shared) | DI wiring, monitoring, framework setup |
+| `db` (shared) | Connection pool, migrations, transactions |
+| `exception` (shared) | Typed API exceptions |
 
 ## Configuration
 
@@ -35,6 +41,8 @@ Applies to every backend service. Framework specifics: [../kotlin/04-ktor.md](..
 - One error mapper maps every error to one body: `{ "error": ..., "message": ..., "details": [...] }`.
 - Every 4xx has that body, including 401 and 429.
 - Never echo the request body back. Malformed JSON gets a generic 400.
+- Unknown routes get 404 with the same body. Any other unexpected exception gets 500 with a generic message and is
+  logged with its stack trace.
 - Reject empty or meaningless input (an empty dataset) at validation.
 
 ## Dependency injection
