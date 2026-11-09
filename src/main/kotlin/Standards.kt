@@ -38,10 +38,10 @@ internal class Standards(
 
     fun list(): String =
         files()
-            .joinToString("\n") { "- ${it.nameWithoutExtension}: ${summary(it)}" }
+            .joinToString("\n") { "- ${name(it)}: ${summary(it)}" }
             .ifEmpty { "No standards in $dir" }
 
-    fun get(name: String): String? = files().find { it.nameWithoutExtension == name }?.readText()
+    fun get(name: String): String? = files().find { name(it) == name }?.readText()
 
     private fun pull() {
         val gitDir = FileRepositoryBuilder().findGitDir(dir).gitDir
@@ -62,7 +62,14 @@ internal class Standards(
         }
     }
 
-    private fun files() = dir.listFiles { file -> file.isFile && file.extension == STANDARD_EXTENSION }.orEmpty().sortedBy { it.name }
+    private fun files() =
+        dir
+            .walk()
+            .filter { it.isFile && it.extension == STANDARD_EXTENSION }
+            .sortedBy(::name)
+            .toList()
+
+    private fun name(file: File) = file.relativeTo(dir).invariantSeparatorsPath.removeSuffix(".$STANDARD_EXTENSION")
 
     private fun summary(file: File) = file.useLines { lines -> lines.firstOrNull { it.isNotBlank() }?.trimStart('#', ' ') }.orEmpty()
 }
