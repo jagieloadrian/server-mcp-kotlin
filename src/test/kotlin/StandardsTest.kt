@@ -115,6 +115,35 @@ class StandardsTest {
     }
 
     @Test
+    fun `should list path names when standards are in subdirectories`() {
+        // given
+        val input =
+            plainStandards(
+                "README.md" to "# Index",
+                "general/01-principles.md" to "# Principles",
+                "kotlin/01-language.md" to "# Kotlin",
+            )
+
+        // when
+        val result = Standards(input).list()
+
+        // then
+        result shouldBe "- README: Index\n- general/01-principles: Principles\n- kotlin/01-language: Kotlin"
+    }
+
+    @Test
+    fun `should return standard when name has subdirectory path`() {
+        // given
+        val input = plainStandards("kotlin/01-language.md" to "# Kotlin\n$KOTLIN_RULE")
+
+        // when
+        val result = Standards(input).get("kotlin/01-language")
+
+        // then
+        result.shouldNotBeNull() shouldContain KOTLIN_RULE
+    }
+
+    @Test
     fun `should report no standards when directory is empty`() {
         // given
         val input = plainStandards()
@@ -154,7 +183,7 @@ class StandardsTest {
     private fun plainStandards(vararg files: Pair<String, String>): File =
         root.resolve(STANDARDS_DIR).apply {
             mkdirs()
-            files.forEach { (name, text) -> resolve(name).writeText(text) }
+            files.forEach { (name, text) -> resolve(name).apply { parentFile.mkdirs() }.writeText(text) }
         }
 
     private fun createRemoteWithServerClone() {

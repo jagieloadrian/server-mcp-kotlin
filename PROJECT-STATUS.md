@@ -13,7 +13,7 @@
 - History rewritten without `Co-Authored-By` trailers (trees unchanged); branch renamed `master` → `main`.
 - `~/.claude/settings.json`: `attribution` set to `{ "commit": "", "pr": "", "sessionUrl": false }`.
 
-### 2026-11-04, `feature-1/apply-standards` (not merged)
+### 2026-11-04, `feature-1/apply-standards` (squash-merged as #1)
 - Code follows `02-kotlin.md`: no comments, `suspend fun main` instead of `runBlocking`, kotlin-logging with
   slf4j-simple, constants instead of magic strings, `internal` visibility, `CancellationException` rethrown.
 - Server wiring extracted to `standardsServer(...)`; `main` only validates the argument and attaches stdio.
@@ -23,7 +23,7 @@
 - Gates in `./gradlew check build`: ktlint (`ktlint_official`), `allWarningsAsErrors`, JaCoCo line > 80 %,
   branch > 75 % (now 84 % / 79 %). Versions in `gradle/libs.versions.toml`, `renovate.json` added.
 
-### 2026-11-04, `feature-2/homelab-deploy` (on top of `feature-1/apply-standards`, not merged)
+### 2026-11-04, `feature-2/homelab-deploy` (squash-merged as #2)
 - HTTP mode for the homelab: `MCP_HTTP_HOSTS` set = Ktor CIO on `0.0.0.0:8080`, stateless Streamable HTTP on
   `POST /mcp`, `GET /health/live` and `/health/ready`. Unset = stdio as before.
 - Logs: logback + logstash encoder, JSON lines (`timestamp`, `level`, `message`, `logger`, `traceId`), stderr by
@@ -37,6 +37,17 @@
   UID 10001: ready in ~2 s, 157 MiB, `docker stop` < 1 s), `helm template` with the chart.
 - homelab-infra branch `feature-8/server-mcp-kotlin` (not pushed): `scripts/new-app.sh own server-mcp-kotlin`,
   architecture diagram, its PROJECT-STATUS.
+
+### 2026-11-09, `feature-3/standards-by-language` (not merged)
+- `standards/` split into `general/` (principles, git, testing, backend, UI/UX, homelab, AI assistants) and
+  `kotlin/` (language, coroutines, build, Ktor, persistence, Compose MP, testing, Spring Boot, Java to Kotlin,
+  Apollo GraphQL). Mixed files were split; the restructure commit adds or drops no rule.
+- The server walks subdirectories; a standard's name is its path without `.md` (`kotlin/02-coroutines`).
+  2 new tests, 20 in total; coverage line 97 %, branch 90 % (without `MainKt`).
+- Rules added from Kotlin/kotlin-agent-skills and lazyskills.sh Kotlin skills, one commit per topic, each
+  commit body naming what was left out.
+- Verified: `./gradlew check build`, stdio smoke test listing all 18 standards and reading nested ones, every
+  relative link in `standards/` resolves, no comments in Markdown code blocks.
 
 ## Decisions
 - Two transports: stdio for the local `claude mcp add`, HTTP for the homelab, chosen by `MCP_HTTP_HOSTS`.
@@ -62,6 +73,17 @@
 - The kotlin-logging banner is disabled in `main` before the SDK loads: it prints to stdout, which carries MCP.
 - MCP client tests run on `Dispatchers.Default` inside `runTest`: on virtual time the client's request timeout
   fires before the server answers from real threads.
+- Standards: `general/` plus one directory per language, so Python or C/C++ can be added as `python/`, `cpp/`
+  without touching `general/`. Numeric prefixes keep reading order in `list_standards`.
+- Skill-pack conflicts, decided with the user on 2026-11-09:
+  - Errors stay typed exceptions mapped at the boundary (ECC `Result` advice not taken).
+  - TDD is required for new logic and bug fixes; tiered coverage targets not taken.
+  - New backends, Ktor included, are packaged by feature; existing projects keep layer-first.
+  - Gradle stays the default build; Kotlin Toolchain rules apply only to projects that already use it.
+  - KMP iOS, AGP 9 and immutable-collections skills not taken.
+- Conflicts resolved by the existing rules without asking: Koin in the backend, `newSuspendedTransaction`, H2
+  tests, LoggerFactory companions, detekt, raw `./gradlew` ban, KDoc in Java conversion, separate `git mv`
+  commit. Stored coroutine scopes are allowed in classes that cancel them in `close()`.
 - History rewrite used `git commit-tree` so the index and working tree (staged `.idea` files) stayed untouched.
 
 ## Usage
@@ -69,13 +91,15 @@ See README.md: local stdio via `installDist` + `claude mcp add`, homelab via
 `claude mcp add --transport http --scope user standards http://server-mcp-kotlin.home.arpa/mcp`.
 
 ## Next steps
-- Squash-merge the `feature-1/apply-standards` PR, then push `feature-2/homelab-deploy` and open its PR.
-- After the first build on `main`: make the GHCR package public, push and merge homelab-infra
+- Push `feature-3/standards-by-language`, open its PR and squash-merge it. The cluster gets the new standards
+  with the next image; the local install needs `./gradlew installDist` after the merge.
+- Homelab: make the GHCR package public after the first build on `main`, push and merge homelab-infra
   `feature-8/server-mcp-kotlin`, `flux reconcile kustomization server-mcp-kotlin -n flux-system --with-source`.
 - Protected `main`: set `DEPLOY_APP_CLIENT_ID` / `DEPLOY_APP_PRIVATE_KEY` (homelab-infra `docs/apps.md`).
-- Not verified locally: kubeconform (binary download was blocked) and the arm64 image; CI covers the first,
-  the RPi rollout the second.
-- Open risk: `startupProbe` and memory measured on amd64 only; check RAM on the RPi after the first rollout.
-- Standards follow-ups: clarify "the app starts" vs. the Statistics-UI desktop ban (`05`, `08`), and
-  "ponytail without `ponytail:` markers" in `08`.
+- Open risk: RAM and startup measured on amd64 only; check on the RPi after the first rollout.
+- Open risk: the daily git pull runs inside the first tool call and took about 20 s over SSH locally. JGit also
+  warns "EdDSA provider not supported" for an ed25519 key from the SSH agent.
+- Standards follow-ups: clarify "the app starts" vs. the Statistics-UI desktop ban (`general/03`,
+  `general/07`), and "ponytail without `ponytail:` markers" in `general/07`. Python and C/C++ directories when
+  needed.
 - Staged `.idea/` files and `server-mcp-kotlin.iml` are the user's and are not committed.

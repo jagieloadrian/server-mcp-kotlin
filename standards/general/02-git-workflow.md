@@ -32,7 +32,7 @@ drops the runBlocking bridge around IngestService.ingest.
 
 1. The change is complete.
 2. Tests covering the touched code are green.
-3. Project gates pass: `./gradlew check build` (ktlint, tests, coverage).
+3. Project gates pass (Kotlin: `./gradlew check build` with ktlint, tests, coverage).
 4. The built behaviour matches each acceptance criterion.
 5. Fix any failure or gap, then run the checks again.
 
