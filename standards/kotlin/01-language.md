@@ -11,6 +11,9 @@ Base: [Kotlin coding conventions](https://kotlinlang.org/docs/coding-conventions
 val (r, g, b) = checkNotNull(lchToSrgb(l, chroma, hue)) { "Chroma $chroma is outside sRGB at tone $tone" }
 ```
 
+- Values from Java are platform types. Treat them as nullable (`name?.length ?: 0`) unless the Java side is
+  annotated `@NonNull`.
+
 ```kotlin
 private suspend fun SnackbarHostState.awaitSnackbar(): SnackbarData {
     while (true) {
@@ -37,11 +40,39 @@ private suspend fun SnackbarHostState.awaitSnackbar(): SnackbarData {
 - `val` over `var`, read-only collections, `buildList` / `buildMap` for assembled collections.
 - Expression bodies for single-expression functions.
 - Sealed interfaces for closed sets (`BrokerConfig` → `KafkaConfig`, `JetStreamConfig`) and exhaustive `when`
-  without `else`.
+  without `else`. `data object` for cases without state.
+- `data class` for data holders and DTOs; change them with `copy()`. Never a `data class` for a JPA entity
+  ([05-persistence.md](05-persistence.md)).
+- `@JvmInline value class` for typed wrappers of primitives (IDs, emails), validated in `init`:
+
+```kotlin
+@JvmInline
+value class Email(val value: String) {
+    init {
+        require("@" in value) { "Invalid email: $value" }
+    }
+}
+```
+
+- No mutable top-level or `object` state.
+
+## Idioms
+
+- `when` as an expression.
+- Scope functions: `let` for a nullable transform, `apply` to configure an object, `also` for a side effect,
+  `run` / `with` for a block on a receiver. Never nest them; chain safe calls instead (`user?.address?.city`).
+- Extension functions for domain operations. A private extension stays in the file or class that uses it.
+- Delegation: `by lazy` for an expensive value computed once, interface delegation (`: Repository by delegate`)
+  instead of forwarding methods by hand.
+- DSL builders: lambdas with receiver (`T.() -> Unit`) and a `@DslMarker` annotation.
+- Collections: `groupBy`, `associateBy`, `partition`, `minByOrNull` instead of hand-written loops. `asSequence()`
+  for a large collection with several chained operations.
 
 ## Errors
 
-- Domain errors are typed exceptions with a status (`ApiException`), mapped once at the boundary.
+- Domain errors are typed exceptions with a status (`ApiException`), mapped once at the boundary. Expected
+  failures are not modelled as `Result` instead.
+- `require` / `check` with a clear message for preconditions and invariants.
 - Never swallow an exception silently. Log it with context or turn it into a result.
 - Anything that catches `Exception` inside a coroutine rethrows `CancellationException` first:
 
