@@ -1,6 +1,6 @@
 # server-mcp-kotlin
 
-MCP server that serves my coding standards (`standards/*.md`) to AI agents, so every project follows the same
+MCP server that serves my coding standards (`standards/**/*.md`) to AI agents, so every project follows the same
 rules. Server `instructions` tell the client to read the relevant standards before writing, reviewing or
 committing code.
 
@@ -8,7 +8,7 @@ committing code.
 
 | Tool | Input | Output |
 | --- | --- | --- |
-| `list_standards` | none | `- <name>: <first heading>` per standard |
+| `list_standards` | none | `- <name>: <first heading>` per standard; `<name>` is the path without `.md`, e.g. `kotlin/02-coroutines` |
 | `get_standard` | `name` from `list_standards` | full markdown, or an error listing the available names |
 
 ## Run locally (stdio)
@@ -47,7 +47,7 @@ image.
 
 ## Deployment
 
-The app follows the homelab platform contract and `standards/07-devops-homelab.md`.
+The app follows the homelab platform contract and `standards/general/06-devops-homelab.md`.
 
 1. A push to `main` runs `.github/workflows/build.yml`: `./gradlew check build`, a Jib multi-arch image
    (`amd64`, `arm64`) pushed to `ghcr.io/jagieloadrian/server-mcp-kotlin:main-<yyyyMMddHHmmss>-<sha7>`, and a
