@@ -1,6 +1,7 @@
 # AI Assistants
 
-Rules for Claude and other agents working in these repos. They add to the other files in `general/` and the language directories.
+Rules for Claude and other agents working in these repos. They add to the other files in `general/` and the
+language directories.
 
 ## Style
 

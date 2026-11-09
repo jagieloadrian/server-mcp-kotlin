@@ -38,7 +38,18 @@ The MCP server names each standard by its path without `.md`, for example `kotli
 | [09-java-to-kotlin.md](kotlin/09-java-to-kotlin.md) | Converting Java files: four passes, checklist, interop and framework pitfalls |
 | [10-apollo-graphql.md](kotlin/10-apollo-graphql.md) | Apollo Kotlin: setup, client, operations, errors, normalized cache |
 
-Testing and UI come from `~/Documents/AI/specs/TEST_SPECIFICATION.md` and `~/Documents/AI/Czytelny Interfejs.md`.
+## Sources
+
+- Testing and UI: `~/Documents/AI/specs/TEST_SPECIFICATION.md` and `~/Documents/AI/Czytelny Interfejs.md`.
+- Kotlin agent skill packs, taken where they do not contradict the rules above (each commit body names what was
+  left out and why):
+  - [Kotlin/kotlin-agent-skills](https://github.com/Kotlin/kotlin-agent-skills) (JetBrains): JPA entity mapping,
+    Java to Kotlin, Kotlin Toolchain.
+  - [lazyskills.sh/skills/kotlin](https://lazyskills.sh/skills/kotlin): ECC kotlin-patterns, kotlin-testing,
+    kotlin-ktor-patterns, kotlin-exposed-patterns; awesome-copilot kotlin-springboot; chrisbanes
+    kotlin-concurrency-and-flow; apollographql apollo-kotlin.
+  - Not taken: KMP iOS skills (CocoaPods to SPM, Kotlin/Native build performance), AGP 9 and
+    kotlinx.collections.immutable migrations.
 
 ## Projects
 
