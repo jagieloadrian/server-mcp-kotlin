@@ -35,6 +35,7 @@ The MCP server names each standard by its path without `.md`, for example `kotli
 | [06-compose-multiplatform.md](kotlin/06-compose-multiplatform.md) | Compose Multiplatform clients: shared code, UI layer, Koin, platform code |
 | [07-testing.md](kotlin/07-testing.md) | Kotest, JUnit 5, MockK, assertions, `testApplication`, coroutine tests, Koin, coverage tools |
 | [08-spring-boot.md](kotlin/08-spring-boot.md) | Spring Boot: build plugins, injection, config, Bean Validation, transactions, test slices |
+| [09-java-to-kotlin.md](kotlin/09-java-to-kotlin.md) | Converting Java files: four passes, checklist, interop and framework pitfalls |
 
 Testing and UI come from `~/Documents/AI/specs/TEST_SPECIFICATION.md` and `~/Documents/AI/Czytelny Interfejs.md`.
 
@@ -49,7 +50,7 @@ All projects follow `general/01`, `02`, `03` and `07`, and `kotlin/01`–`03` an
 | mon-home-ass | Ktor 3, Exposed, read-only PostgreSQL (Home Assistant recorder), OpenAPI | general/04, 06; kotlin/04, 05 |
 | SmartConnectLumBunny | KMP (Android + desktop JVM), Compose, Koin, BLE | general/05; kotlin/06 |
 | DatabaseScheduleExecutor | Kotlin JVM CLI, JDBC (6 vendors), cron-utils, shadow jar | none |
-| darksouls-progress-bar | IntelliJ Platform plugin, Kotlin + Java | general/05 |
+| darksouls-progress-bar | IntelliJ Platform plugin, Kotlin + Java | general/05; kotlin/09 |
 | server-mcp-kotlin | Ktor CIO, MCP Kotlin SDK, KGit | general/06 |
 
 ## Precedence
