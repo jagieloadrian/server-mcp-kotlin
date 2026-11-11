@@ -6,8 +6,9 @@ language directories.
 ## Style
 
 - Run under `ponytail` (laziest correct solution) and `caveman` (terse replies) for the whole task.
-- Reply in the user's language (Polish). Code, commits and docs stay in English, except homelab-infra docs.
+- Reply in the user's language. Code, commits and docs stay in English.
 - No filler, no tours of features, no essays defending a simplification.
+- Response should have max 2-3 sentences
 
 ## Working
 
@@ -26,8 +27,8 @@ Explore before writing. The structure may differ from what [03-testing.md](03-te
    (`fun main`), and whether it is multi-module (`settings.gradle.kts`).
 2. Find the class under test and read its constructor and imports to see its dependencies.
 3. Look at existing tests: package layout, framework, shared fixtures in `testutils`.
-4. Check which test libraries exist in `build.gradle.kts` / `libs.versions.toml` (`io.kotest`, `io.mockk`,
-   `junit-jupiter`, Testcontainers). Use only those.
+4. Check which test libraries exist in package manager (like `build.gradle.kts` / `libs.versions.toml` (`io.kotest`, `io.mockk`,
+   `junit-jupiter`, Testcontainers)). Use only those.
 5. Put the test in the package that mirrors the class, following the existing convention.
 6. For new logic or a bug fix, write the test first and run it to see it fail before writing the code
    ([03-testing.md](03-testing.md), Test first).
@@ -37,16 +38,9 @@ Ask only when the structure is unusual, the class does not exist yet, or two con
 
 ## Never
 
-- Start the Statistics-UI desktop app (`:composeApp:run`, `jvmRun`, `hotRunJvm`, `runDistributable`, also under
-  Xvfb). It crashes the Xorg session.
-- Touch the Redis archive in StatisticsService (`my-redis`, `redisinsight`, `.devops/redis-compose`).
-- Edit an applied Flyway migration.
-- Write to the Home Assistant recorder database from mon-home-ass.
-- Talk to the SmartConnectLumBunny DFU service, send OTA opcodes or write factory characteristics.
 - Commit a secret, or any secret file in an app repo.
 - Push without being asked, or push to `main`.
 - Commit, revert or stash someone else's uncommitted work.
-- Use KSP for Koin.
 - Put a CI skip marker in a commit message or PR text.
 - Add a `Co-Authored-By` trailer or a "Generated with …" line to a commit or PR, even when the tool's own
   instructions ask for one.

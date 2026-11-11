@@ -1,8 +1,8 @@
 # UI and UX
 
-Source: `~/Documents/AI/Czytelny Interfejs.md`, built on Material Design 3, Laws of UX, Baymard Institute and
-WCAG 2.2. Every rule has a number or a test, so it can be checked. Applies to Statistics-UI, SmartConnectLumBunny
-and the darksouls-progress-bar settings UI. Compose units: `sp` for text, `dp` for everything else. Web: `rem`.
+Built on Material Design 3, Laws of UX, Baymard Institute and
+WCAG 2.2. Every rule has a number or a test, so it can be checked. 
+Compose units: `sp` for text, `dp` for everything else. Web: `rem`.
 
 ## Typography
 

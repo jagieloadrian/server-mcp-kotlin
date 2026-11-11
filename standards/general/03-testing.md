@@ -1,7 +1,7 @@
 # Testing
 
 Sources: `~/Documents/AI/specs/TEST_SPECIFICATION.md` and current project practice. When the two conflict, the rules
-in [01-principles.md](01-principles.md) and the language files win (no comments, no `!!`). Frameworks, mocking
+in [01-principles.md](01-principles.md) and the language files win. Frameworks, mocking
 libraries and commands are in the language directory, for Kotlin [../kotlin/07-testing.md](../kotlin/07-testing.md).
 
 ## What to test
@@ -57,9 +57,8 @@ Scenarios to cover for each unit:
 
 ## Real dependencies
 
-- Testcontainers for PostgreSQL, Kafka, NATS and other database vendors. One shared container setup per project
+- Testcontainers for PostgreSQL, Kafka, NATS and other database vendors or external service. One shared container setup per project
   (`testutils`).
-- H2 only where the project already relies on it (mon-home-ass).
 - Mock only what you do not own or cannot start.
 
 ## Principles
@@ -78,12 +77,11 @@ Scenarios to cover for each unit:
 ## Coverage
 
 - Minimum: line above 80 %, branch above 75 %, mutation above 70 % where mutation testing is used.
-- Project gates can be stricter. StatisticsService runs JaCoCo verification at 88 % instruction, line and branch
-  inside `check`.
+- Project gates can be stricter. 
 
 ## Running
 
-- The project gate (Kotlin: `./gradlew check build`) is green before every commit: lint, tests and coverage.
+- The project gate (i.e. Kotlin: `./gradlew check build`) is green before every commit: lint, tests and coverage.
 - After every implementation the app must build and start.
 
 ## Checklist for a new test
