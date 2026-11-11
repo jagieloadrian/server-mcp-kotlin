@@ -5,12 +5,6 @@ General rules (what to test, naming, structure, coverage, checklist):
 
 ## Frameworks
 
-| Project | Framework |
-|---------|-----------|
-| StatisticsService, Statistics-UI, mon-home-ass | Kotest 6 `FunSpec` |
-| DatabaseScheduleExecutor, darksouls-progress-bar | JUnit 5 |
-| SmartConnectLumBunny | JUnit 4 (Android host and device tests), Roborazzi, Konsist |
-
 Everywhere: Kotest assertions and MockK. Stay with the framework the project already uses. Use only libraries
 that are already in `build.gradle.kts` / `libs.versions.toml`.
 

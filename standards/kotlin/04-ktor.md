@@ -1,6 +1,6 @@
 # Ktor
 
-Applies to StatisticsService and mon-home-ass. Framework-neutral backend rules:
+Framework-neutral backend rules:
 [../general/04-backend.md](../general/04-backend.md).
 
 ## Routes
@@ -41,7 +41,7 @@ check(problems.isEmpty()) { "Invalid configuration: ${problems.joinToString("; "
 
 ## API contract
 
-- mon-home-ass: OpenAPI comes from the routes' `.describe {}` blocks (`/openapi.json`, `/swagger`).
+- OpenAPI comes from the routes' `.describe {}` blocks (`/openapi.json`, `/swagger`).
 
 ## Observability
 

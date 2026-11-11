@@ -1,7 +1,6 @@
 # Compose Multiplatform
 
-Applies to Statistics-UI (wasmJs, js, JVM desktop) and SmartConnectLumBunny (Android + desktop JVM). Visual and
-UX rules are in [../general/05-ui-ux.md](../general/05-ui-ux.md).
+Visual and UX rules are in [../general/05-ui-ux.md](../general/05-ui-ux.md).
 
 ## Shared code first
 
