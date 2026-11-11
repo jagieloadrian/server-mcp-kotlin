@@ -1,23 +1,17 @@
 # Backend
 
-Applies to every backend service. Framework specifics: [../kotlin/04-ktor.md](../kotlin/04-ktor.md),
-[../kotlin/05-persistence.md](../kotlin/05-persistence.md).
+Applies to every backend service. Framework specifics are in the language directory, for Kotlin
+[../kotlin/04-ktor.md](../kotlin/04-ktor.md) and [../kotlin/05-persistence.md](../kotlin/05-persistence.md).
 
 ## Layout
 
 - New projects: one package per feature or domain (`order`, `user`, `ingest`). The layer shows in the file name
   (`OrderRoutes`, `OrderService`, `OrderRepository`); data classes go into `<feature>/model`, DTOs into
-  `<feature>/model/dto`.
-- Existing projects keep their layer-first layout below. Moving them needs a reason in the commit body.
-- Shared infrastructure stays outside the feature packages in both layouts.
+  `<feature>/model/dto`, validation rules into `<feature>/validation`.
+- Shared infrastructure stays outside the feature packages:
 
-| Layer | Holds |
+| Package | Holds |
 |-------|-------|
-| `controller` / `*Routes` | Routes and error mapping. No business rules, no validation calls |
-| `service` / `*Service` | Business rules |
-| `repository` / `*Repository` | Database queries |
-| `model`, `model/dto` | Data classes, API DTOs |
-| `validation` | Request validation rules and shared validation helpers |
 | `config` (shared) | Loading and validating configuration |
 | `di` (shared) | DI wiring, monitoring, framework setup |
 | `db` (shared) | Connection pool, migrations, transactions |
@@ -27,14 +21,14 @@ Applies to every backend service. Framework specifics: [../kotlin/04-ktor.md](..
 
 - Values come from env vars (12-factor).
 - Configuration is read in one place only into a typed config object.
-- One loader per section (db, oidc, kafka, jetstream). Each loader collects problems into a list, and startup
+- One loader per section (db, oidc, kafka, jetstream etc.). Each loader collects problems into a list, and startup
   fails once with every problem listed.
 
 ## Request validation
 
-- Rules live in the `validation` package and run in the framework's validation step.
+- Rules live in `<feature>/validation` and run in the framework's validation step.
 - Route handlers never call validators, never parse to validate, and never persist anything for invalid input.
-- Normalise values in one shared function (`normalizeEmail`), not per route.
+- Normalize values in one shared function (`normalizeEmail`), not per route.
 
 ## Errors
 
@@ -53,15 +47,13 @@ Applies to every backend service. Framework specifics: [../kotlin/04-ktor.md](..
 ## Database
 
 - Never edit a database migration that has been applied. Add a new one.
-- Use a read-only database user when the app only reads. mon-home-ass never writes to the Home Assistant recorder
-  database.
+- Use a read-only database user when the app only reads.
 - All records go through one record store abstraction so the backend stays swappable.
 
 ## API contract
 
 - Contracts are versioned. A breaking change needs a new version, not a silent change.
-- OpenAPI is generated from the routes, never from a hand-edited file (mon-home-ass).
-- StatisticsService: contracts are documented in `.docs`.
+- OpenAPI is generated from the routes, never from a hand-edited file.
 
 ## Observability
 

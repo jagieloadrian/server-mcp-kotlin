@@ -1,7 +1,6 @@
 # Compose Multiplatform
 
-Applies to Statistics-UI (wasmJs, js, JVM desktop) and SmartConnectLumBunny (Android + desktop JVM). Visual and
-UX rules are in [../general/05-ui-ux.md](../general/05-ui-ux.md).
+Visual and UX rules are in [../general/05-ui-ux.md](../general/05-ui-ux.md).
 
 ## Shared code first
 
@@ -47,6 +46,6 @@ UX rules are in [../general/05-ui-ux.md](../general/05-ui-ux.md).
 
 ## Running
 
-- Run the web target with `./gradlew :composeApp:wasmJsBrowserDevelopmentRun` (port 8081).
-- Never start the Statistics-UI desktop app from a terminal or agent session (`:composeApp:run`, `jvmRun`,
-  `hotRunJvm`, `runDistributable`, also under Xvfb). It crashes the Xorg session.
+- Run the web target with `./gradlew :composeApp:wasmJsBrowserDevelopmentRun`.
+- Never start a desktop app from a terminal or agent session (`:composeApp:run`, `jvmRun`, `hotRunJvm`,
+  `runDistributable`, also under Xvfb). It can crash the Xorg session.

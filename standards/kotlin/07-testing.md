@@ -5,12 +5,6 @@ General rules (what to test, naming, structure, coverage, checklist):
 
 ## Frameworks
 
-| Project | Framework |
-|---------|-----------|
-| StatisticsService, Statistics-UI, mon-home-ass | Kotest 6 `FunSpec` |
-| DatabaseScheduleExecutor, darksouls-progress-bar | JUnit 5 |
-| SmartConnectLumBunny | JUnit 4 (Android host and device tests), Roborazzi, Konsist |
-
 Everywhere: Kotest assertions and MockK. Stay with the framework the project already uses. Use only libraries
 that are already in `build.gradle.kts` / `libs.versions.toml`.
 
@@ -134,7 +128,7 @@ shouldThrow<ValidationException> { validator.validate(input) }
 
 ## Coverage tools
 
-- JaCoCo verification inside `check`, or Kover where the project uses it (Statistics-UI, darksouls-progress-bar).
+- JaCoCo verification inside `check`, or Kover where the project uses it.
   Reports go to Codecov where it is configured.
 
 ## Running
@@ -146,7 +140,7 @@ shouldThrow<ValidationException> { validator.validate(input) }
 ```
 
 - `./gradlew check build` is green before every commit: ktlint, tests and coverage.
-- Statistics-UI also compiles the js and wasm targets.
+- Multiplatform projects also compile their js and wasm targets.
 
 ## References
 

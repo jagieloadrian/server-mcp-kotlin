@@ -38,7 +38,7 @@
 - homelab-infra branch `feature-8/server-mcp-kotlin` (not pushed): `scripts/new-app.sh own server-mcp-kotlin`,
   architecture diagram, its PROJECT-STATUS.
 
-### 2026-11-09, `feature-3/standards-by-language` (not merged)
+### 2026-11-09, `feature-3/standards-by-language` (squash-merged as #3)
 - `standards/` split into `general/` (principles, git, testing, backend, UI/UX, homelab, AI assistants) and
   `kotlin/` (language, coroutines, build, Ktor, persistence, Compose MP, testing, Spring Boot, Java to Kotlin,
   Apollo GraphQL). Mixed files were split; the restructure commit adds or drops no rule.
@@ -48,6 +48,14 @@
   commit body naming what was left out.
 - Verified: `./gradlew check build`, stdio smoke test listing all 18 standards and reading nested ones, every
   relative link in `standards/` resolves, no comments in Markdown code blocks.
+
+### 2026-11-11, `feature-4/manual-editing` (not merged)
+- User commits drop project names from the standards and add `general/08-sdd-speckit-flow.md`.
+- Review fixes in one commit: leftover project names, spec-kit order and loops, Kotlin details out of
+  `general/`, `<feature>/validation`, PR titles as Conventional Commits, commit body at most 120 characters.
+- New `general/09-agents.md`: delegation (search, review, git), checking agent output, context, project setup,
+  building agent apps (tools, MCP, prompts, evals). Claude Code and Claude API as examples; no GSD.
+- Verified: `./gradlew check build`, stdio smoke test lists `general/08` and `general/09`, links resolve.
 
 ## Decisions
 - Two transports: stdio for the local `claude mcp add`, HTTP for the homelab, chosen by `MCP_HTTP_HOSTS`.
@@ -84,6 +92,8 @@
 - Conflicts resolved by the existing rules without asking: Koin in the backend, `newSuspendedTransaction`, H2
   tests, LoggerFactory companions, detekt, raw `./gradlew` ban, KDoc in Java conversion, separate `git mv`
   commit. Stored coroutine scopes are allowed in classes that cancel them in `close()`.
+- Spec-kit features use `feature-<n>/` branches; `analyze` runs up to five rounds and stops at a clean round.
+- Project-specific safety bans removed from the standards stay out; they were not moved to project files.
 - History rewrite used `git commit-tree` so the index and working tree (staged `.idea` files) stayed untouched.
 
 ## Usage
@@ -91,15 +101,16 @@ See README.md: local stdio via `installDist` + `claude mcp add`, homelab via
 `claude mcp add --transport http --scope user standards http://server-mcp-kotlin.home.arpa/mcp`.
 
 ## Next steps
-- Push `feature-3/standards-by-language`, open its PR and squash-merge it. The cluster gets the new standards
-  with the next image; the local install needs `./gradlew installDist` after the merge.
+- Push `feature-4/manual-editing`, open its PR with a Conventional Commit title and squash-merge it.
+- Open risk: spec-kit scripts may expect `<NNN>-<name>` branches; check on the first spec-kit feature.
+- Open risk: the Redis archive (StatisticsService) and DFU/OTA (SmartConnectLumBunny) bans no longer live in
+  any file those repos load. The desktop-app ban stays, generalized, in `kotlin/06`.
 - Homelab: make the GHCR package public after the first build on `main`, push and merge homelab-infra
   `feature-8/server-mcp-kotlin`, `flux reconcile kustomization server-mcp-kotlin -n flux-system --with-source`.
 - Protected `main`: set `DEPLOY_APP_CLIENT_ID` / `DEPLOY_APP_PRIVATE_KEY` (homelab-infra `docs/apps.md`).
 - Open risk: RAM and startup measured on amd64 only; check on the RPi after the first rollout.
 - Open risk: the daily git pull runs inside the first tool call and took about 20 s over SSH locally. JGit also
   warns "EdDSA provider not supported" for an ed25519 key from the SSH agent.
-- Standards follow-ups: clarify "the app starts" vs. the Statistics-UI desktop ban (`general/03`,
-  `general/07`), and "ponytail without `ponytail:` markers" in `general/07`. Python and C/C++ directories when
+- Standards follow-ups: "ponytail without `ponytail:` markers" in `general/07`. Python and C/C++ directories when
   needed.
 - Staged `.idea/` files and `server-mcp-kotlin.iml` are the user's and are not committed.

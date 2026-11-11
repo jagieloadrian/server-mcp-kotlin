@@ -1,6 +1,6 @@
 # Java to Kotlin
 
-Applies when converting Java files, for example in darksouls-progress-bar (Kotlin + Java).
+Applies when converting Java files.
 
 ## Workflow
 
