@@ -113,4 +113,3 @@ See README.md: local stdio via `installDist` + `claude mcp add`, homelab via
   warns "EdDSA provider not supported" for an ed25519 key from the SSH agent.
 - Standards follow-ups: "ponytail without `ponytail:` markers" in `general/07`. Python and C/C++ directories when
   needed.
-- Staged `.idea/` files and `server-mcp-kotlin.iml` are the user's and are not committed.
