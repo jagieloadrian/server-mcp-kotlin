@@ -1,7 +1,7 @@
 # AI Assistants
 
 Rules for Claude and other agents working in these repos. They add to the other files in `general/` and the
-language directories.
+language directories. Delegation, project setup and agent apps are in [09-agents.md](09-agents.md).
 
 ## Style
 
@@ -16,8 +16,6 @@ language directories.
 - Act on sensible defaults instead of asking. Ask only for decisions that really belong to the user.
 - Verify before claiming. Report failing tests with their output and say which steps were skipped.
 - Keep the main context small: read only relevant files, never lockfiles, build output or `node_modules`.
-- After delegating git work to an agent, check `git log --oneline -5` and `git status`. Report any commit you did
-  not ask for.
 
 ## Writing tests
 

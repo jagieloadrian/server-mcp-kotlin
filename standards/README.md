@@ -23,6 +23,7 @@ The MCP server names each standard by its path without `.md`, for example `kotli
 | [06-devops-homelab.md](general/06-devops-homelab.md) | Images, Helm/Flux deploy, runtime contract, secrets, local compose |
 | [07-ai-assistants.md](general/07-ai-assistants.md) | Rules for Claude and other agents working in these repos |
 | [08-sdd-speckit-flow.md](general/08-sdd-speckit-flow.md) | Spec-kit command order, analyze rounds, branches |
+| [09-agents.md](general/09-agents.md) | Delegating to subagents, checking their output, project setup, building agent apps |
 
 ### kotlin
 
