@@ -57,8 +57,8 @@ Scenarios to cover for each unit:
 
 ## Real dependencies
 
-- Testcontainers for PostgreSQL, Kafka, NATS and other database vendors or external service. One shared container setup per project
-  (`testutils`).
+- Testcontainers for PostgreSQL, Kafka, NATS and other databases or external services. One shared container setup
+  per project (`testutils`).
 - Mock only what you do not own or cannot start.
 
 ## Principles
@@ -77,11 +77,11 @@ Scenarios to cover for each unit:
 ## Coverage
 
 - Minimum: line above 80 %, branch above 75 %, mutation above 70 % where mutation testing is used.
-- Project gates can be stricter. 
+- Project gates can be stricter.
 
 ## Running
 
-- The project gate (i.e. Kotlin: `./gradlew check build`) is green before every commit: lint, tests and coverage.
+- The project gate (for Kotlin: `./gradlew check build`) is green before every commit: lint, tests and coverage.
 - After every implementation the app must build and start.
 
 ## Checklist for a new test

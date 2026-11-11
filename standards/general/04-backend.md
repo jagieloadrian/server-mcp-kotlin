@@ -1,15 +1,16 @@
 # Backend
 
-Applies to every backend service. 
+Applies to every backend service. Framework specifics are in the language directory, for Kotlin
+[../kotlin/04-ktor.md](../kotlin/04-ktor.md) and [../kotlin/05-persistence.md](../kotlin/05-persistence.md).
 
 ## Layout
 
 - New projects: one package per feature or domain (`order`, `user`, `ingest`). The layer shows in the file name
   (`OrderRoutes`, `OrderService`, `OrderRepository`); data classes go into `<feature>/model`, DTOs into
-  `<feature>/model/dto`.
-- Shared infrastructure stays outside the feature packages in both layouts.
+  `<feature>/model/dto`, validation rules into `<feature>/validation`.
+- Shared infrastructure stays outside the feature packages:
 
-| Layer | Holds |
+| Package | Holds |
 |-------|-------|
 | `config` (shared) | Loading and validating configuration |
 | `di` (shared) | DI wiring, monitoring, framework setup |
@@ -25,7 +26,7 @@ Applies to every backend service.
 
 ## Request validation
 
-- Rules live in the `validation` package and run in the framework's validation step.
+- Rules live in `<feature>/validation` and run in the framework's validation step.
 - Route handlers never call validators, never parse to validate, and never persist anything for invalid input.
 - Normalize values in one shared function (`normalizeEmail`), not per route.
 
@@ -46,7 +47,7 @@ Applies to every backend service.
 ## Database
 
 - Never edit a database migration that has been applied. Add a new one.
-- Use a read-only database user when the app only reads. 
+- Use a read-only database user when the app only reads.
 - All records go through one record store abstraction so the backend stays swappable.
 
 ## API contract

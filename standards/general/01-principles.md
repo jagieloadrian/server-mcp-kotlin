@@ -58,5 +58,4 @@ diff in the wrong place is a second bug.
 ## Language
 
 - Code, identifiers, commit messages, PRs, README and `.docs` are in English.
-- homelab-infra documentation is in Polish.
 - Explanations live in commit bodies, README, `.docs` or PROJECT-STATUS.md, never in code comments.

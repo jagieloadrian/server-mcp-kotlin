@@ -128,7 +128,7 @@ shouldThrow<ValidationException> { validator.validate(input) }
 
 ## Coverage tools
 
-- JaCoCo verification inside `check`, or Kover where the project uses it (Statistics-UI, darksouls-progress-bar).
+- JaCoCo verification inside `check`, or Kover where the project uses it.
   Reports go to Codecov where it is configured.
 
 ## Running
@@ -140,7 +140,7 @@ shouldThrow<ValidationException> { validator.validate(input) }
 ```
 
 - `./gradlew check build` is green before every commit: ktlint, tests and coverage.
-- Statistics-UI also compiles the js and wasm targets.
+- Multiplatform projects also compile their js and wasm targets.
 
 ## References
 
