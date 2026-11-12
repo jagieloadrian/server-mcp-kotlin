@@ -11,6 +11,7 @@ libraries and commands are in the language directory, for Kotlin [../kotlin/07-t
 - Test core flows and contract shapes, not every line. No tests for trivial getters or one-liners.
 - A bug fix comes with the test that fails without it.
 - Every protected route has a test that calls it without credentials and expects 401.
+- Every role check has a test with a valid token that lacks the role and expects 403.
 - Test at the layer the code lives in: protocol framing and crypto get parity tests against known vectors, domain
   logic gets unit tests, flows that cross the database or a broker get integration tests.
 
