@@ -30,6 +30,13 @@ Applies to Kotlin projects on Spring Boot. Framework-neutral backend rules:
   not checked.
 - One `@RestControllerAdvice` with `@ExceptionHandler`s maps errors to the shared error body.
 
+## Security
+
+- `spring-boot-starter-oauth2-resource-server` with `spring.security.oauth2.resourceserver.jwt.issuer-uri` and
+  `audiences`.
+- A `JwtAuthenticationConverter` whose `JwtGrantedAuthoritiesConverter` reads `groups` (`authoritiesClaimName =
+  "groups"`, `authorityPrefix = "ROLE_"`). Routes check roles with `hasRole`.
+
 ## Transactions
 
 - `@Transactional` on service classes or functions, never on controllers.

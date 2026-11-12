@@ -83,10 +83,22 @@ Applies to every backend service. Framework specifics are in the language direct
   rejected.
 - Redelivery must be idempotent. Pub/sub sources need identity fields in every mapping rule.
 
-## Security
+## Identity and roles
 
-- Passwords: PBKDF2-HMAC-SHA256, 600 000 iterations, random salt, constant-time comparison, and a decoy hash when
-  the user does not exist.
-- Tokens: 32 random bytes, base64url, stored only as a SHA-256 hash.
-- Local sign-in and OIDC both resolve to platform users. Roles stay in the platform, not in the identity
-  provider.
+- The OIDC provider owns users, credentials and roles. Apps keep no user table, no passwords and no local
+  sign-in.
+- Web and mobile clients sign in with Authorization Code and PKCE as public clients; no client secret ships in a
+  client. Backends accept only bearer access tokens.
+- A backend verifies every token: signature through the issuer's JWKS, `iss`, `aud` (the app's client ID), `exp`
+  and `nbf`. Tokens from any other issuer are rejected.
+- Roles come from the `groups` claim, named `<app>-<role>`, for example `statistics-admin`. An app reads only
+  groups with its own prefix and maps them to permissions in one place. Deny by default.
+- No token or an invalid token gets 401. A valid token without the needed role gets 403. Both use the shared
+  error body.
+- Users are identified by `sub`, never by e-mail. Records store the owner's `sub`; name and e-mail come from the
+  token and are copied only when a record must keep them.
+- A role change takes effect with the next token. Roles are never cached beyond the token's lifetime.
+- The UI hides what a role cannot do, but only the backend enforces it.
+- Service-to-service calls use the client credentials grant. Devices and brokers that cannot use OIDC get
+  per-client tokens: 32 random bytes, base64url, stored only as a SHA-256 hash.
+- Existing apps with local users move to this model when their auth code is next changed.

@@ -12,7 +12,7 @@ Framework-neutral backend rules:
 
 - `EngineMain` with `application.yaml`; values come from env vars.
 - Local profile: a layered `-config` file (the later file wins), for example `.devops/application-local.yaml`,
-  started by a `runLocal` Gradle task. It runs without OIDC.
+  started by a `runLocal` Gradle task. It replaces OIDC with a fixed local user whose groups are set in that file.
 - `ApplicationConfig` is read in one place only (`AppConfigLoader`) into a typed `AppConfig`. Each section loader
   collects problems, and startup fails once:
 
@@ -62,4 +62,8 @@ check(problems.isEmpty()) { "Invalid configuration: ${problems.joinToString("; "
 
 ## Security
 
-- PBKDF2-HMAC-SHA256 through JCA.
+- Bearer tokens through `ktor-server-auth-jwt`: `jwt("oidc")` with `verifier(jwkProvider, issuer) {
+  withAudience(clientId) }`. The `JwkProvider` comes from `JwkProviderBuilder(URL(jwksUri))` with caching and rate
+  limiting; `jwksUri` comes from the issuer's discovery document.
+- One route-scoped plugin checks the `groups` claim. Each protected route declares the role it needs.
+- Device tokens: `SecureRandom` and SHA-256 through JCA.
