@@ -21,6 +21,8 @@
 
 - The cluster is the one the infra repo describes, e.g. k3s on two nodes, Istio ambient, Gateway API
   `home-gateway` in `istio-ingress`.
+- Identity provider: Authelia. Each app's OIDC client issues JWT access tokens that carry the `groups` claim;
+  Authelia issues opaque access tokens unless the client is configured otherwise.
 - Namespace `apps`, host `<app>.home.arpa`. Access is limited by AuthorizationPolicy.
 - Probes on `/health/live` and `/health/ready`.
 - Memory request equals limit. No CPU limit.
@@ -31,7 +33,8 @@
 
 - One compose file per dependency: `.devops/<name>-compose/compose.yaml` (postgres, kafka, nats).
 - A local profile without OIDC, started with one command (Kotlin: Gradle task `runLocal` with
-  `.devops/application-local.yaml`).
+  `.devops/application-local.yaml`). It signs in a fixed local user whose groups are set in the local config.
+  Only the local profile can turn this on, never an env var in an image.
 
 ## Dependencies
 
