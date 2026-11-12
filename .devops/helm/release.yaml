@@ -19,7 +19,7 @@ spec:
         name: flux-system
         namespace: flux-system
   values:
-    image: ghcr.io/jagieloadrian/server-mcp-kotlin:main-20261109212313-e5a3757
+    image: ghcr.io/jagieloadrian/server-mcp-kotlin:main-20261111210743-15ea0fb
     route:
       hostname: server-mcp-kotlin.home.arpa
     env:
