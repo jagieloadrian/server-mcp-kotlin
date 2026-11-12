@@ -57,6 +57,10 @@
   building agent apps (tools, MCP, prompts, evals). Claude Code and Claude API as examples; no GSD.
 - Verified: `./gradlew check build`, stdio smoke test lists `general/08` and `general/09`, links resolve.
 
+### 2026-11-12, `feature-5/retrigger-actions` (not merged)
+- Standards: the OIDC provider owns users and roles (`general/04`, Identity and roles). Roles come from the
+  `groups` claim named `<app>-<role>`; 401 without a valid token, 403 without the role; no local passwords.
+
 ## Decisions
 - Two transports: stdio for the local `claude mcp add`, HTTP for the homelab, chosen by `MCP_HTTP_HOSTS`.
 - Stateless Streamable HTTP: both tools are read-only, so no session store and any replica can answer.
@@ -92,6 +96,7 @@
 - Conflicts resolved by the existing rules without asking: Koin in the backend, `newSuspendedTransaction`, H2
   tests, LoggerFactory companions, detekt, raw `./gradlew` ban, KDoc in Java conversion, separate `git mv`
   commit. Stored coroutine scopes are allowed in classes that cancel them in `close()`.
+- Local sign-in and platform-held roles are dropped; existing apps migrate when their auth code next changes.
 - Spec-kit features use `feature-<n>/` branches; `analyze` runs up to five rounds and stops at a clean round.
 - Project-specific safety bans removed from the standards stay out; they were not moved to project files.
 - History rewrite used `git commit-tree` so the index and working tree (staged `.idea` files) stayed untouched.
@@ -102,6 +107,8 @@ See README.md: local stdio via `installDist` + `claude mcp add`, homelab via
 
 ## Next steps
 - Push `feature-4/manual-editing`, open its PR with a Conventional Commit title and squash-merge it.
+- StatisticsService still has local users (`AUTH_LOCAL`, `ADMIN_PASSWORD`); migrate it to Authelia groups.
+- Authelia: configure each app client for JWT access tokens with `groups`; verify the exact settings first.
 - Open risk: spec-kit scripts may expect `<NNN>-<name>` branches; check on the first spec-kit feature.
 - Open risk: the Redis archive (StatisticsService) and DFU/OTA (SmartConnectLumBunny) bans no longer live in
   any file those repos load. The desktop-app ban stays, generalized, in `kotlin/06`.
