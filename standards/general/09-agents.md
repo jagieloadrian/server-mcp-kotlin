@@ -19,6 +19,33 @@ the Claude API; other tools have their own equivalents.
 - One agent definition per narrow job, with only the tools it needs (Claude Code: `.claude/agents/<name>.md` in
   the project, `~/.claude/agents/` for every project).
 
+### Cheap agents
+
+- There is no token cap per agent. Tokens go mostly into what the agent reads, so limit its tools, its turns
+  and the size of what it reads.
+- The description is one sentence. The main agent loads every description on every request.
+- No `memory` unless the agent must learn across sessions. It adds memory instructions and file tools.
+- Unknown frontmatter fields are ignored without an error. Check the spelling.
+- Check the token count in the agent's result after its first runs.
+
+Template for a narrow job (Claude Code):
+
+```markdown
+---
+name: <verb-noun>
+description: <one sentence: what it does and when to use it>
+tools: Bash         # only what the job needs; never WebFetch, WebSearch or Agent
+model: haiku
+effort: low
+maxTurns: 10
+omitClaudeMd: true  # copy the few rules it needs into the prompt below
+---
+
+<The job in a few lines.> Chain commands with `&&`.
+Read summaries first (`git diff --stat`, `grep -l`) and cut long output with `| head -100`.
+Output: <exact format, for example one line per finding>. Nothing else.
+```
+
 ## Checking agent output
 
 - A subagent's report is a claim. Read the cited lines and run the tests before acting on it.
