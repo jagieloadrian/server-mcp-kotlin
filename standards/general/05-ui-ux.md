@@ -184,6 +184,18 @@ does not come, fix the hierarchy before touching colours or icons.
 Applied above: law of proximity (spacing) and the Doherty threshold (400 ms). The full set of 30 laws is at
 [lawsofux.com](https://lawsofux.com/).
 
+## Checking UI changes
+
+- Every Compose screen and shared component has a `@Preview` with fixed sample data (no clock, random values or
+  network), in light and dark theme.
+- When the compose-preview plugin is available (Claude Code: the `compose-preview` skill, CLI `compose-preview`),
+  check every UI change by rendering the affected previews, also at 200 % font scale, and looking at the result.
+  Never start the app for this.
+- UI pull requests are reviewed on base and head renders side by side (`compose-preview-review` skill).
+- Without the tool, the report says that the UI change was not checked visually.
+- Renders stay local. The hosted catalog and UI Builder (ui.coo.ee) keep previews and designs on an external
+  server. Use them only for public projects.
+
 ## Checklist before release
 
 Go through every new screen:
