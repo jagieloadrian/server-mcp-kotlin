@@ -48,4 +48,5 @@ Visual and UX rules are in [../general/05-ui-ux.md](../general/05-ui-ux.md).
 
 - Run the web target with `./gradlew :composeApp:wasmJsBrowserDevelopmentRun`.
 - Never start a desktop app from a terminal or agent session (`:composeApp:run`, `jvmRun`, `hotRunJvm`,
-  `runDistributable`, also under Xvfb). It can crash the Xorg session.
+  `runDistributable`, also under Xvfb). It can crash the Xorg session. To see a screen, render its preview
+  ([Checking UI changes](../general/05-ui-ux.md#checking-ui-changes)).
